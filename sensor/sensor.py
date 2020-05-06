@@ -32,7 +32,5 @@ for sensor_file in sensor_files:
                 sensor_data[key].append(row[key])
             line_count += 1
 
-print(sensor_data['id'])
-print(sensor_data['date'])
 print(f'Processed {line_count} lines.')
 print(sensor_data.keys())
