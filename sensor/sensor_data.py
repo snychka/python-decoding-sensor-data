@@ -4,6 +4,7 @@ from house_info import HomeData                 # module 3
 from temperature_info import TemperatureData    # module 4
 from humidity_info import HumidityData          # module 5
 from particle_count_info import ParticleData    # module 6
+from energy_info import EnergyData              # module 7
 
 
 # Module 2
@@ -45,3 +46,9 @@ print("Moderate Air Quality Recs: {0}".format(rooms_aq["moderate"]))
 print("Bad Air Quality Recs: {0}".format(rooms_aq["bad"]))
 
 # Module 7
+print("\nProcessing Energy Consumption")
+home_energy = EnergyData(data)
+rooms_energy = home_energy.get_data("energy_usage")
+print("Rooms records {0}".format(len(rooms_energy)))
+energy = home_energy.calculate_energy_usage(rooms_energy)
+print("Energy Consumption: {0:.2E} watts ".format(energy))
