@@ -16,6 +16,8 @@ Draft.
 
 ## Module 1: System Setup
 
+We will use `sensor/sensor_data.py` as our program driver.
+
 ## Module 2: Load Data From Files
 
 ```python
