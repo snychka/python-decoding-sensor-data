@@ -1,22 +1,35 @@
-import os
-import glob
-import csv
+from statistics import mean
+from load_info import load_sensor_data          # module 3
+from house_info import HomeData                 # module 3
+from temperature_info import TemperatureData    # module 4
+from humidity_info import HumidityData          # module 5
 
-# Set file(s) path
-sensor_files = glob.glob(os.path.join(os.getcwd(), 'datasets', '*.csv'))
-sensor_files.sort()
 
-# create a list to store data
-sensor_data = []
+# Module 2
+data = load_sensor_data()
+print(f"Loaded records {len(data)}")
 
-# Loop over list of files
-for sensor_file in sensor_files:
-    with open (sensor_file) as data_file:
-        # Create a csv.DictReader
-        data_reader = csv.DictReader(data_file, delimiter=',')
-        # Loop over each row dictionary
-        for row in data_reader: 
-            # Create a list of dictionaries
-            sensor_data.append(row)
+# Module 3
+home_info = HomeData(data)
+home_temp = home_info.get_data_by_room("id")
+print(f"Home sensor records {len(home_temp)}")
 
-print(f"Loaded records {len(sensor_data)}")
+# Module 4
+print("\nProcessing Temperature Information")
+home_temp = TemperatureData(data)
+room1_temp = home_temp.get_data("temperature", 1)
+room2_temp = home_temp.get_data("temperature", 2)
+rooms_temp = home_temp.get_data("temperature")
+print(f"Max Room 1 {max(room1_temp)}, min {min(room1_temp)}, avg {mean(room1_temp)}, records {len(room1_temp)}")
+print(f"Max Room 2 {max(room2_temp)}, min {min(room2_temp)}, avg {mean(room2_temp)}, records {len(room2_temp)}")
+print(f"Rooms Avg {mean(rooms_temp)}, records {len(rooms_temp)}")
+
+# Module 5
+print("\nProcessing Humidity Information")
+home_humi = HumidityData(data)
+room1_humi = home_humi.get_data("humidity", 1)
+room2_humi = home_humi.get_data("humidity", 2)
+rooms_humi = home_humi.get_data("humidity")
+print(f"Max Room 1 {max(room1_humi)}%, min {min(room1_humi)}%, avg {mean(room1_humi)}%, records {len(room1_humi)}")
+print(f"Max Room 2 {max(room2_humi)}%, min {min(room2_humi)}%, avg {mean(room2_humi)}%, records {len(room2_humi)}")
+print(f"Rooms Avg {mean(rooms_humi)}%, records {len(rooms_humi)}")

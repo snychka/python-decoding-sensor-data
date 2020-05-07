@@ -1,4 +1,4 @@
-id,date,time,temperature,humidity,particle_count_hex,particle_count_sn,room
+id,date,time,temperature,humidity,light_bulbs,particle_count,room
 1,5/7/2020,0:01,50,0.8,0xffc,4.09E+03,2
 2,5/7/2020,0:02,50,0.53,0xffb,4.09E+03,2
 3,5/7/2020,0:02,50,0.82,0xff3,4.08E+03,2
