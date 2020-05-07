@@ -3,6 +3,7 @@ from load_info import load_sensor_data          # module 3
 from house_info import HomeData                 # module 3
 from temperature_info import TemperatureData    # module 4
 from humidity_info import HumidityData          # module 5
+from particle_count_info import ParticleData    # module 6
 
 
 # Module 2
@@ -33,3 +34,14 @@ rooms_humi = home_humi.get_data("humidity")
 print(f"Max Room 1 {max(room1_humi)}%, min {min(room1_humi)}%, avg {mean(room1_humi)}%, records {len(room1_humi)}")
 print(f"Max Room 2 {max(room2_humi)}%, min {min(room2_humi)}%, avg {mean(room2_humi)}%, records {len(room2_humi)}")
 print(f"Rooms Avg {mean(rooms_humi)}%, records {len(rooms_humi)}")
+
+# Module 6
+print("\nProcessing ParticleCounter Information")
+home_pc = ParticleData(data)
+rooms_pc = home_pc.get_data("particulate")
+rooms_aq = home_pc.get_concentrations(rooms_pc)
+print("Good Air Quality Recs: {0}".format(rooms_aq["good"]))
+print("Moderate Air Quality Recs: {0}".format(rooms_aq["moderate"]))
+print("Bad Air Quality Recs: {0}".format(rooms_aq["bad"]))
+
+# Module 7
