@@ -68,6 +68,9 @@ instance/
 
 # Virtualenv
 venv/
+venv36/
+venv37/
+venv38/
 .venv/
 
 # Datasets

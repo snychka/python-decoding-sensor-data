@@ -1,4 +1,4 @@
-id,date,time,temperature,humidity,energy_usage,particulate,room
+id,date,time,temperature,humidity,energy_usage,particulate,area
 1,5/7/2020,0:01,50,0.8,0xffc,8.1E+00,2
 2,5/7/2020,0:02,50,0.53,0xffb,8.1E+00,2
 3,5/7/2020,0:02,50,0.82,0xff3,8.5E+00,2
