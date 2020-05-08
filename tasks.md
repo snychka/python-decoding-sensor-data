@@ -3,7 +3,7 @@
 - [Module 01 - The Sensor Class](#module-01---the-sensor-class)
   - [Status](#status)
   - [Module 1: System Setup](#module-1-system-setup)
-  - [Module 2: Load Data From Files](#module-2-load-data-from-files)
+    - [Task 1: Import os, glob, and csv](#task-1-import-os-glob-and-csv)
   - [Module 3: Create a Class HomeData](#module-3-create-a-class-homedata)
   - [Module 4: Analyze Temperature Data](#module-4-analyze-temperature-data)
   - [Module 5: Analyze Humidity Data](#module-5-analyze-humidity-data)
@@ -14,13 +14,23 @@
 
 Draft.
 
-## Module 1: System Setup
+## Module 1: Load Sensor Data From Files
 
-## Module 2: Load Data From Files
+### Task 1: Import os, glob, and csv
+
+//]: # (@pytest.mark.test_site_path_import_module1)
 
 ```python
-from sensor_file import Sensor
+import os
+import glob
+import csv
 ```
+
+In this module we'll build up a function to parse to data files with the sensor information. 
+
+ Class that will set configuration values and create the root structure of our static site. We'll also create a command line tool using the `Typer` library. Since we are going to be working with paths let's import `pathlib`, which is part of the standard library.
+
+Open the `site.py` located in the `ssg` directory. At the top import `Path` from `pathlib`.
 
 ## Module 3: Create a Class HomeData
 
