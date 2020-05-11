@@ -109,26 +109,26 @@ def test_load_data_sensor_files_module1(parse):
     ), "Are you creating a variable called `sensor_files` and assigning it glob.glob() and passing os.path.join()? Are you passing 3 values to os.path.join()?"
 
 
-@pytest.mark.test_load_data_sensor_files_query_module1
-def test_load_data_sensor_files_query_module1(parse):
+# @pytest.mark.test_load_data_sensor_files_query_module1
+# def test_load_data_sensor_files_query_module1(parse):
 
-    # def load_sensor_data():
-    #   ....
-    #   sensor_files = glob.glob(os.path.join(os.getcwd(), 'datasets', '*.csv'))
+#     # def load_sensor_data():
+#     #   ....
+#     #   sensor_files = glob.glob(os.path.join(os.getcwd(), 'datasets', '*.csv'))
 
-    load_data = parse("load_data")
-    assert load_data.success, load_data.message
+#     load_data = parse("load_data")
+#     assert load_data.success, load_data.message
 
-    sensor_files = load_data.query(
-        "glob.glob(os.path.join(os.getcwd(), 'datasets', '*.csv'))")
-    sensor_files_exists = sensor_files.exists()
-    assert (
-        sensor_files_exists
-    ), "Are you including `glob.glob(os.path.join(os.getcwd(), 'datasets', '*.csv'))` in your code?"
+#     sensor_files = load_data.query(
+#         "glob.glob(os.path.join(os.getcwd(), 'datasets', '*.csv'))")
+#     sensor_files_exists = sensor_files.exists()
+#     assert (
+#         sensor_files_exists
+#     ), "Are you including `glob.glob(os.path.join(os.getcwd(), 'datasets', '*.csv'))` in your code?"
 
 
-@pytest.mark.test_load_data_for_files_module1
-def test_load_data_for_files_module1(parse):
+@pytest.mark.test_load_data_read_files_module1
+def test_load_data_read_files_module1(parse):
 
     # def load_sensor_data():
     #   ....
@@ -260,8 +260,8 @@ def test_load_data_for_files_module1(parse):
     ), 'Are you returning `sensor_data` from `load_sensor_data` function?'
 
 
-@pytest.mark.test_load_data_return_module1
-def test_sensor_load_data_return_module1(parse):
+@pytest.mark.test_sensor_app_load_data_return_module1
+def test_sensor_app_load_data_return_module1(parse):
     # from load_data import load_sensor_data
     # data = load_sensor_data()
     # print("Loaded records {}".format(len(data)))

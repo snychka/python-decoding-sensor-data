@@ -17,4 +17,5 @@ def load_sensor_data():
             for row in data_reader:
                 # Create a list of dictionaries
                 sensor_data.append(row)
+
     return sensor_data
