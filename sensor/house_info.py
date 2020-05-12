@@ -1,1 +1,0 @@
-# Module 3: Create an instance of sensor data

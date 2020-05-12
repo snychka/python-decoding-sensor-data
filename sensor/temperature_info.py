@@ -1,1 +1,0 @@
-# Module 4: Work with integer data from temperature sensor
