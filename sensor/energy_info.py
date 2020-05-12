@@ -1,1 +1,0 @@
-# Module 7: Work with hex and binary data from light bulbs sensor to energy
