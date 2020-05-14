@@ -115,6 +115,12 @@ class Parser:
 
     def assign_(self):
         return Parser(None, [flatten(self.execute("$.body[@.type is 'Assign']").n)])
+    
+    def def_args_(self, name):
+        return Parser(None, [flatten(self.execute("$.body[@.type is 'FunctionDef' and @.name is '{}']".format(
+            name
+        )
+        ).n)])
 
     def assigns(self):
         return Parser(

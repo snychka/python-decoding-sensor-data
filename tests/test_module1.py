@@ -107,23 +107,6 @@ def test_load_data_sensor_files_module1(parse):
     ), "Are you creating a variable called `sensor_files` and assigning it glob.glob() and passing os.path.join()? Are you passing 3 values to os.path.join()?"
 
 
-# @pytest.mark.test_load_data_sensor_files_query_module1
-# def test_load_data_sensor_files_query_module1(parse):
-
-#     # def load_sensor_data():
-#     #   ....
-#     #   sensor_files = glob.glob(os.path.join(os.getcwd(), 'datasets', '*.csv'))
-
-#     load_data = parse("load_data")
-#     assert load_data.success, load_data.message
-
-#     sensor_files = load_data.query(
-#         "glob.glob(os.path.join(os.getcwd(), 'datasets', '*.csv'))")
-#     sensor_files_exists = sensor_files.exists()
-#     assert (
-#         sensor_files_exists
-#     ), "Are you including `glob.glob(os.path.join(os.getcwd(), 'datasets', '*.csv'))` in your code?"
-
 
 @pytest.mark.test_load_data_read_files_module1
 def test_load_data_read_files_module1(parse):
@@ -225,11 +208,6 @@ def test_load_data_load_recs_module1(parse):
         load_sensor_data.exists()
     ), "Are you defining a function called `load_sensor_data` with the correct arguments?"
 
-    # print(json.dumps(load_sensor_data.for_().n, indent=2))  # TODO Remove
-    # print(json.dumps(load_sensor_data.assign_().n, indent=2))
-    # print(json.dumps(load_sensor_data.returns_call().n, indent=2))
-    # print(json.dumps(load_sensor_data.assigns().n, indent=2))
-    # assert False
 
     first_for_exists = (
         load_sensor_data.for_()
@@ -365,37 +343,43 @@ def test_sensor_app_load_data_return_module1(parse):
     # print(json.dumps(sensor.calls().n, indent=2))
     # assert False
 
-    data = sensor.assign_().match(
-        {
-            "type": "Assign",
-            "targets_0_type": "Name",
-            "targets_0_id": "data",
-            "value_type": "Call",
-            "value_func_type": "Name",
-            "value_func_id": "load_sensor_data",
-        }
+    data = (
+        sensor.assign_().match(
+            {
+                "1_type": "Assign",
+                "1_targets_0_type": "Name",
+                "1_targets_0_id": "recs",
+                "1_value_type": "Call",
+                "1_value_func_type": "Name",
+                "1_value_func_id": "load_sensor_data",
+            }
+        )
+    .exists()
     )
     assert (
         data
     ), "Are you creating a variable called `data` set equal to `load_sensor_data()` function?"
     
-    print_data = sensor.calls().match(
-        {
-            "type": "Expr",
-            "value_type": "Call",
-            "value_func_type": "Name",
-            "value_func_id": "print",
-            "value_args_0_type": "Call",
-            "value_args_0_func_type": "Attribute",
-            "value_args_0_func_value_type": "Constant",
-            "value_args_0_func_value_value": "Loaded records {}",
-            "value_args_0_func_attr": "format",
-            "value_args_0_args_0_type": "Call",
-            "value_args_0_args_0_func_type": "Name",
-            "value_args_0_args_0_func_id": "len",
-            "value_args_0_args_0_args_0_type": "Name",
-            "value_args_0_args_0_args_0_id": "data"
-        }
+    print_data = (
+        sensor.calls().match(
+            {
+                "type": "Expr",
+                "value_type": "Call",
+                "value_func_type": "Name",
+                "value_func_id": "print",
+                "value_args_0_type": "Call",
+                "value_args_0_func_type": "Attribute",
+                "value_args_0_func_value_type": "Constant",
+                "value_args_0_func_value_value": "Loaded records: [{}]",
+                "value_args_0_func_attr": "format",
+                "value_args_0_args_0_type": "Call",
+                "value_args_0_args_0_func_type": "Name",
+                "value_args_0_args_0_func_id": "len",
+                "value_args_0_args_0_args_0_type": "Name",
+                "value_args_0_args_0_args_0_id": "recs"
+            }
+        )
+        .exists()
     )
     assert (
         print_data
