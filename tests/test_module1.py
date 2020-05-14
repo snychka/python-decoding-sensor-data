@@ -411,28 +411,28 @@ def test_sensor_app_load_data_return_module1(parse):
         data
     ), "Are you creating a variable called `data` set equal to `load_sensor_data()` function?"
     
-    print_data = (
-        sensor.calls().match(
-            {
-                "type": "Expr",
-                "value_type": "Call",
-                "value_func_type": "Name",
-                "value_func_id": "print",
-                "value_args_0_type": "Call",
-                "value_args_0_func_type": "Attribute",
-                "value_args_0_func_value_type": "Constant",
-                "value_args_0_func_value_value": "Loaded records: {}",
-                "value_args_0_func_attr": "format",
-                "value_args_0_args_0_type": "Call",
-                "value_args_0_args_0_func_type": "Name",
-                "value_args_0_args_0_func_id": "len",
-                "value_args_0_args_0_args_0_type": "Name",
-                "value_args_0_args_0_args_0_id": "data"
-            }
-        )
-        .exists()
-    )
-    assert (
-        print_data
-    ), "Are you calling `print()` and passing in `format()`? Are you passing 1 values to `format()` `len(data)`"
+    # print_data = (
+    #     sensor.calls().match(
+    #         {
+    #             "type": "Expr",
+    #             "value_type": "Call",
+    #             "value_func_type": "Name",
+    #             "value_func_id": "print",
+    #             "value_args_0_type": "Call",
+    #             "value_args_0_func_type": "Attribute",
+    #             "value_args_0_func_value_type": "Constant",
+    #             "value_args_0_func_value_value": "Loaded records: {}",
+    #             "value_args_0_func_attr": "format",
+    #             "value_args_0_args_0_type": "Call",
+    #             "value_args_0_args_0_func_type": "Name",
+    #             "value_args_0_args_0_func_id": "len",
+    #             "value_args_0_args_0_args_0_type": "Name",
+    #             "value_args_0_args_0_args_0_id": "data"
+    #         }
+    #     )
+    #     .exists()
+    # )
+    # assert (
+    #     print_data
+    # ), "Are you calling `print()` and passing in `format()`? Are you passing 1 values to `format()` `len(data)`"
     
