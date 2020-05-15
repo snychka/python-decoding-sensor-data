@@ -69,7 +69,7 @@ def test_house_info_create_class_module2(parse):
 @pytest.mark.test_house_info_get_data_by_area_module2
 def test_house_info_get_data_by_area_module2(parse):
     
-    # def get_data_by_area(self, field, area=0):
+    # def get_data_by_area(self, field, rec_area=0):
         # field_data = []
     house_info = parse("house_info")
     assert house_info.success, house_info.message
@@ -96,7 +96,7 @@ def test_house_info_get_data_by_area_module2(parse):
                 "args_args_1_arg": "field",
                 "args_args_1_annotation": "nil",
                 "args_args_2_type": "arg",
-                "args_args_2_arg": "area",
+                "args_args_2_arg": "rec_area",
                 "args_args_2_annotation": "nil",
                 "args_vararg": "nil",
                 "args_kwarg": "nil",
@@ -133,9 +133,9 @@ def test_house_info_get_data_by_area_module2(parse):
 def test_house_info_get_data_by_area_loop_module2(parse):
     
     #     for record in self.data:
-            # if area == int(record['area']):       # select area
+            # if rec_area == int(record['area']):       # select area
             #     field_data.append(record[field])
-            # elif area == 0:
+            # elif rec_area == 0:
             #     field_data.append(record[field])
     #     return field_data
 
@@ -181,25 +181,32 @@ def test_house_info_get_data_by_area_loop_module2(parse):
         Your function call should have only one argument. For example: `id`
         Check the logic inside your loop"""
 
-    home_temp = home_info.get_data_by_area("id", area=1)
+    home_temp = home_info.get_data_by_area("id", rec_area=1)
     assert (
         len(home_temp) == 1000
     ), """The length of your filter data when calling `get_data_by_area` is incorrect.
-        Your call should have the first argument as `id`, and the second argument as `area=1
+        Your call should have the first argument as `id`, and the second argument as `rec_area=1
         Check the logic inside your loop"""
 
-    home_temp = home_info.get_data_by_area("id", area=2)
+    home_temp = home_info.get_data_by_area("id", rec_area=2)
     assert (
         len(home_temp) == 1000
     ), """The length of your filter data when calling `get_data_by_area` is incorrect.
-        Your call should have the first argument as `id`, and the second argument as `area=2
+        Your call should have the first argument as `id`, and the second argument as `rec_area=2
+        Check the logic inside your loop"""
+    
+    home_temp = home_info.get_data_by_area("id", rec_area=-999)
+    assert (
+        len(home_temp) == 0
+    ), """The length of your filter data when calling `get_data_by_area` is incorrect.
+        Your call should have the first argument as `id`, and the second argument as `rec_area=-999
         Check the logic inside your loop"""
 
 
 @pytest.mark.test_house_info_get_data_by_date_module2
 def test_house_info_get_data_by_date_module2(parse):
 
-    # from datetime import date
+    # from datetime import date, datetime
     # def get_data_by_date(self, field, rec_date=date.today()):
     #     field_data = []
 
@@ -271,12 +278,10 @@ def test_house_info_get_data_by_date_module2(parse):
     ), "Are you creating a variable called `field_data` set equal to an empty list?"
     
     
-
 @pytest.mark.test_house_info_get_data_by_date_loop_module2
 def test_house_info_get_data_by_date_loop_module2(parse):
         # for record in self.data:
-        #     # filter data by date
-        #     if str(rec_date.strftime("%m/%d/%Y")) == record['date']:       # select area
+        #     if rec_date.strftime("%m/%d/%y") == record['date']: 
         #         field_data.append(record[field])
 
         # return field_data
@@ -292,6 +297,8 @@ def test_house_info_get_data_by_date_loop_module2(parse):
     data_by_date = house_info.class_("HouseInfo").method(test_method)
     assert data_by_date.exists(), "Are you defining a method called `{}?".format(test_method)
 
+    # print(json.dumps(data_by_date.for_().n, indent=2)) # TODO
+    # assert False
     first_for = (
         data_by_date.for_().match(
             {
@@ -317,15 +324,12 @@ def test_house_info_get_data_by_date_loop_module2(parse):
                 "0_type": "If",
                 "0_test_type": "Compare",
                 "0_test_left_type": "Call",
-                "0_test_left_func_type": "Name",
-                "0_test_left_func_id": "str",
-                "0_test_left_args_0_type": "Call",
-                "0_test_left_args_0_func_type": "Attribute",
-                "0_test_left_args_0_func_value_type": "Name",
-                "0_test_left_args_0_func_value_id": "rec_date",
-                "0_test_left_args_0_func_attr": "strftime",
-                "0_test_left_args_0_args_0_type": "Constant",
-                "0_test_left_args_0_args_0_value": "%m/%d/%y",
+                "0_test_left_func_type": "Attribute",
+                "0_test_left_func_value_type": "Name",
+                "0_test_left_func_value_id": "rec_date",
+                "0_test_left_func_attr": "strftime",
+                "0_test_left_args_0_type": "Constant",
+                "0_test_left_args_0_value": "%m/%d/%y",
                 "0_test_ops_0_type": "Eq",
                 "0_test_comparators_0_type": "Subscript",
                 "0_test_comparators_0_value_type": "Name",
@@ -345,6 +349,7 @@ def test_house_info_get_data_by_date_loop_module2(parse):
                 "0_body_0_value_args_0_slice_type": "Index",
                 "0_body_0_value_args_0_slice_value_type": "Name",
                 "0_body_0_value_args_0_slice_value_id": "field"
+
             }
         )
         .exists()
@@ -352,8 +357,8 @@ def test_house_info_get_data_by_date_loop_module2(parse):
     assert (
         filter_recs
     ), """Are you filtering the data using an `if` statement? 
-        Are you converting the date format of `rec_date` to "%m/%d/%Y" form?
-        Are you casting the `rec_date` as an `str` when comparing with `rec['date']` field?
+        Are you converting the date format of `rec_date` to "%m/%d/%y" form?
+        Are you casting the `rec_date` as string with `strptime()` when comparing with `rec['date']` field?
         Are you appending the filter records to `field_data`?"""
 
 
@@ -390,13 +395,13 @@ def test_house_info_get_data_by_date_loop_module2(parse):
     # assert False
 
 
-@pytest.mark.test_sensor_app_house_info_module2
-def test_sensor_app_load_house_info_module2(parse):
+@pytest.mark.test_sensor_app_house_info_by_area_module2
+def test_sensor_app_load_house_info_by_area_module2(parse):
     # from house_info import HouseInfo
     # ...
     # house_info = HouseInfo(data)
-    # house_temp = house_info.get_data_by_area("id")
-    # print(f"House sensor records {len(house_temp)}")
+    # recs = house_info.get_data_by_area("id", rec_area=1)
+    # print("House sensor records for area 1 = {}".format(len(recs)))
 
     sensor = parse("sensor_app")
     assert sensor.success, sensor.message
@@ -405,17 +410,7 @@ def test_sensor_app_load_house_info_module2(parse):
         "house_info", "HouseInfo")
     assert house_info_import, "Are you importing `HouseInfo` from house_info?"
 
-    datetime_import = sensor.from_imports(
-        "datetime", "datetime")
-    assert datetime_import, "Are you importing `datetime` from datetime?"
-
-    date_import = sensor.from_imports(
-        "datetime", "date")
-    assert date_import, "Are you importing `date` from datetime?"
-    # print(json.dumps(sensor.assign_().n, indent=2))
-    # assert False
-
-    house_area = (
+    house_info = (
         sensor.assign_().match(
             {
                 "2_type": "Assign",
@@ -426,6 +421,19 @@ def test_sensor_app_load_house_info_module2(parse):
                 "2_value_func_id": "HouseInfo",
                 "2_value_args_0_type": "Name",
                 "2_value_args_0_id": "data",
+            }
+        )
+        .exists()
+    )
+    assert (
+        house_info
+    ), """Are you creating an instance of the `class` HouseInfo with 
+        `data` list as the initialization argument for the constructor?
+        """
+    
+    house_temp = (
+        sensor.assign_().match(
+            {
                 "3_type": "Assign",
                 "3_targets_0_type": "Name",
                 "3_targets_0_id": "recs",
@@ -437,7 +445,7 @@ def test_sensor_app_load_house_info_module2(parse):
                 "3_value_args_0_type": "Constant",
                 "3_value_args_0_value": "id",
                 "3_value_keywords_0_type": "keyword",
-                "3_value_keywords_0_arg": "area",
+                "3_value_keywords_0_arg": "rec_area",
                 "3_value_keywords_0_value_type": "Constant",
                 "3_value_keywords_0_value_value": 1,
             }
@@ -445,14 +453,33 @@ def test_sensor_app_load_house_info_module2(parse):
         .exists()
     )
     assert (
-        house_area
-    ), """Are you creating an instance of the `class` HouseInfo with 
-        `data` list as the initialization argument for the constructor?
-        Are you creating a variable `house_area` and setting it to the return 
+        house_temp
+    ), """Are you creating a variable `recs` and setting it to the return 
             value from `house_info.get_data_by_area()`?
-        Are you passing `area=1 or 2` as the second argument to the `get_data_by_area()` method?
-        """
-    
+          Are you passing `area=1 or 2` as the second argument to the `get_data_by_area()` method?"""
+
+
+@pytest.mark.test_sensor_app_house_info_by_date_module2
+def test_sensor_app_load_house_info_by_date_module2(parse):
+    # from datetime import date, datetime
+    # ...
+    # rec_date = datetime.strptime("5/9/2020", "%m/%d/%Y")
+    # recs = house_info.get_data_by_date("id", rec_date)
+    # print("House sensor records for {} = {}".format(rec_date.date(), len(recs)))
+
+    sensor = parse("sensor_app")
+    assert sensor.success, sensor.message
+
+    datetime_import = sensor.from_imports(
+        "datetime", "datetime")
+    assert datetime_import, "Are you importing `datetime` from datetime?"
+
+    date_import = sensor.from_imports(
+        "datetime", "date")
+    assert date_import, "Are you importing `date` from datetime?"
+    # print(json.dumps(sensor.assign_().n, indent=2))
+    # assert False
+
     house_date = (
         sensor.assign_().match(
             {
@@ -468,6 +495,18 @@ def test_sensor_app_load_house_info_module2(parse):
                 "4_value_args_0_value": "5/9/2020",
                 "4_value_args_1_type": "Constant",
                 "4_value_args_1_value": "%m/%d/%Y",
+            }
+        )
+        .exists()
+    )
+    assert (
+        house_date
+    ),  """Are you creating an instance of the datetime class called `record_date` 
+            which takes "5/9/2020" and "%m/%d/%Y" as the two arguments?"""
+    
+    house_temp = (
+        sensor.assign_().match(
+            {
                 "5_type": "Assign",
                 "5_targets_0_type": "Name",
                 "5_targets_0_id": "recs",
@@ -485,12 +524,7 @@ def test_sensor_app_load_house_info_module2(parse):
         .exists()
     )
     assert (
-        house_date
-    ), """Are you creating an instance of the `class` HouseInfo with 
-        `data` list as the initialization argument for the constructor?
-        Are you creating an instance of the datetime class called `record_date` 
-            which takes "5/9/2020" and "%m/%d/%Y" as the two arguments?
-        Are you creating a variable `house_date` and setting it to the return 
+        house_temp
+    ), """Are you creating a variable `recs` and setting it to the return 
             value from `house_info.get_data_by_date()`?
-        Are you passing `rec_date` as the second argument to the `get_data_by_date()` method?
-        """
+          Are you passing `area=1 or 2` as the second argument to the `get_data_by_area()` method?"""
