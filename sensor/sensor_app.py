@@ -7,4 +7,4 @@ print("Sensor Data App")
 data = load_sensor_data()
 #data = []
 #print(f'Loaded records: [{data}]')
-#print('Loaded records: [{0}]'.format(data))
+print('Loaded records: {0}'.format(len(data)))
