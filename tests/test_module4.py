@@ -986,8 +986,8 @@ def test_particle_by_date_method_return_module4(parse):
         Passing `recs` as the only argument?""".format(test_method)
 
 
-@pytest.mark.test_sensor_app_temp_info_by_area_module4
-def test_sensor_app_temp_info_by_area_module4(parse):
+@pytest.mark.test_sensor_app_particle_info_by_area_module4
+def test_sensor_app_particle_info_by_area_module4(parse):
     # from particle_count_info import ParticleData          # module 4
     # ...
     # particle_data = ParticleData(data)
@@ -1088,8 +1088,8 @@ def test_sensor_app_temp_info_by_area_module4(parse):
         """
 
 
-@pytest.mark.test_sensor_app_temp_info_by_date_module4
-def test_sensor_app_temp_info_by_date_module4(parse):
+@pytest.mark.test_sensor_app_particle_info_by_date_module4
+def test_sensor_app_particle_info_by_date_module4(parse):
     # ...
     # recs = particle_data.get_data_by_date(test_date)
     # NOTE: print statements are not validated
