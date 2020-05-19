@@ -1,7 +1,11 @@
 import pytest
 import json
 
-from sensor.load_data import load_sensor_data as lsd
+try:
+    from sensor.load_data import load_sensor_data 
+    recs = load_sensor_data()
+except ImportError:
+    recs = 0
 
 @pytest.mark.test_load_data_import_module1
 def test_load_data_import_module1(parse):
@@ -314,8 +318,7 @@ def test_load_data_load_recs_module1(parse):
     ), 'Are you returning `sensor_data` from `load_sensor_data` function?'
 
     # Test Length of return value
-    # data_len = load_sensor_data()
-    data_len = lsd()
+    # recs = load_sensor_data() # this is defined above
     assert (
         len(data_len) == 2000
     ), """The length of your sensor_data list is incorrect. 

@@ -1,9 +1,13 @@
 import pytest
 from tests.template import debug_test_case, debug_test_case_class
-import sensor.load_data
-import sensor.house_info
-from datetime import date, datetime
 
+try:
+    from sensor.load_data import load_sensor_data 
+    recs = load_sensor_data()
+except ImportError:
+    recs = 0
+
+from datetime import date, datetime
 
 @pytest.mark.test_house_info_create_class_module2
 def test_house_info_create_class_module2(parse):
@@ -195,7 +199,7 @@ def test_house_info_get_data_by_area_loop_module2(parse):
 
 
     # Test filer options:
-    recs = sensor.load_data.load_sensor_data()
+    # recs = sensor.load_data.load_sensor_data()    # defined at top of file
     home_info = sensor.house_info.HouseInfo(recs)
     home_temp = home_info.get_data_by_area("id")
     assert (
@@ -400,7 +404,7 @@ def test_house_info_get_data_by_date_loop_module2(parse):
 
 
     # Test filer options:
-    recs = sensor.load_data.load_sensor_data()
+    # recs = sensor.load_data.load_sensor_data()    # defined at top of file
     home_info = sensor.house_info.HouseInfo(recs)
     home_temp = home_info.get_data_by_date("id")
     assert (
