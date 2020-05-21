@@ -2,34 +2,25 @@ import pytest
 from tests.template import debug_test_case, debug_test_case_class
 
 
-@pytest.mark.test_energy_import_module5
-def test_energy_import_module5(parse):
+@pytest.mark.test_energy_create_class_module5
+def test_energy_create_class_module5(parse):
     # from house_info import HouseInfo
+    # class EnergyData(HouseInfo):
+    #       ENERGY_PER_BULB = 0.2        # in watts
+    #       ENERGY_BITS = 0x0F0
 
     test_file = "energy_info"
-    
+    parent_class = "HouseInfo"
+    test_class = "EnergyData"
+    test_method = "_convert_data"
+
     my_file = parse(test_file)
     assert my_file.success, my_file.message
 
     my_file_import = my_file.from_imports(
         "house_info", "HouseInfo")
+    
     assert my_file_import, "Are you importing `HouseInfo` from `house_info` in `{}` file".format(test_file)
-
-
-@pytest.mark.test_energy_create_class_module5
-def test_energy_create_class_module5(parse):
-    # class EnergyData(HouseInfo):
-    #    def _convert_data(self, data):
-    #         recs = []
-
-    test_file = "energy_info"
-    parent_class = "HouseInfo"
-    test_class = "EnergyData"
-    test_method = "_convert_data"
-
-    my_file = parse(test_file)
-    assert my_file.success, my_file.message
-
     my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
     assert (
         my_class.exists()
@@ -37,158 +28,6 @@ def test_energy_create_class_module5(parse):
         Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
 
     # debug_test_case_class(my_class, test_method) 
-    
-    my_method = my_file.class_(test_class).method(test_method)
-    assert (
-        my_method.exists()
-    ), "Are you defining a method called `{}`?".format(test_method)
-    
-    # debug_test_case(my_method) 
-    
-    my_class_arguments = (
-        my_class.def_args_(test_method).match(
-            {
-                "type": "FunctionDef",
-                "name": "_convert_data",
-                "args_type": "arguments",
-                "args_args_0_type": "arg",
-                "args_args_0_arg": "self",
-                "args_args_0_annotation": "nil",
-                "args_args_1_type": "arg",
-                "args_args_1_arg": "data",
-                "args_args_1_annotation": "nil",
-                "args_vararg": "nil",
-                "args_kwarg": "nil",
-            }
-        )
-        .exists()
-    )
-    assert (
-        my_class_arguments
-    ), """Are you defining a method `{0}` for the `{1}` class?
-        Are you declaring the correct name and number of parameters?""".format(test_method, test_class)
-    
-    # Check for assignment 
-    test_code = (
-        my_method.assign_().match(
-            {
-                "targets_0_type": "Name",
-                "targets_0_id": "recs",
-                "value_type": "List"
-            }
-        )
-        .exists()
-    )
-    assert (
-        test_code
-    ), "Are you creating a variable called `recs` set equal to an empty list?"
-    
-
-@pytest.mark.test_energy_convert_loop_module5
-def test_energy_convert_loop_module5(parse):
-    # for rec in data:
-    #     # Convert string of integers into actual integers based 16
-    #     recs.append(self._get_energy(rec))
-    # return recs
-
-    test_file = "energy_info"
-    parent_class = "HouseInfo"
-    test_class = "EnergyData"
-    test_method = "_convert_data"
-   
-    my_file = parse(test_file)
-    assert my_file.success, my_file.message
-
-    my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
-    assert (
-        my_class.exists()
-    ), """Have you created a class called `{0}`?
-        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
-
-    my_method = my_file.class_(test_class).method(test_method)
-    assert (
-        my_method.exists()
-    ), "Are you defining a method called `{}`?".format(test_method)
-    
-    # debug_test_case(my_method) 
-
-    test_code = (
-        my_method.for_().match(
-            {
-                "target_type": "Name",
-                "target_id": "rec",
-                "iter_type": "Name",
-                "iter_id": "data"
-            }
-        )
-        .exists()
-    )
-    assert (
-        test_code
-    ), """Do you have a `for` loop, looping through `data`? 
-        Is the current loop value called `rec`?"""
-
-    test_code = (
-        my_method.for_().match(
-            {
-                "0_type": "Expr",
-                "0_value_type": "Call",
-                "0_value_func_type": "Attribute",
-                "0_value_func_value_type": "Name",
-                "0_value_func_value_id": "recs",
-                "0_value_func_attr": "append",
-                "0_value_args_0_type": "Call",
-                "0_value_args_0_func_type": "Attribute",
-                "0_value_args_0_func_value_type": "Name",
-                "0_value_args_0_func_value_id": "self",
-                "0_value_args_0_func_attr": "_get_energy",
-                "0_value_args_0_args_0_type": "Name",
-                "0_value_args_0_args_0_id": "rec"
-            }
-        )
-        .exists()
-    )
-    assert (
-        test_code
-    ), """Inside your loop, are you converting `rec` value through `self._rec_energy()` method?
-        Are you appending it to `recs` list?"""
-    
-    test_code= (
-        my_method.returns_call().match(
-            {
-                "type": "Return",
-                "value_type": "Name",
-                "value_id": "recs"
-            }
-        )
-        .exists()
-    )
-    assert (
-        test_code
-    ), """Are you returning `recs` list from the `{}` method?""".format(test_method)
-
-
-@pytest.mark.test_energy_class_variables_module5
-def test_energy_class_variables_module5(parse):
-    # ENERGY_PER_BULB = 0.2        # in watts
-    # ENERGY_BITS = 0x0F0
-    
-    test_file = "energy_info"
-    parent_class = "HouseInfo"
-    test_class = "EnergyData"
-    test_method = "_convert_data"
-
-    my_file = parse(test_file)
-    assert my_file.success, my_file.message
-
-    my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
-    assert (
-        my_class.exists()
-    ), """Have you created a class called `{0}`?
-        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
-
-    # debug_test_case_class(my_class, test_method) 
-    # debug_test_case(my_class) 
     
     test_code = (
         my_class.assign_().match(
@@ -223,7 +62,6 @@ def test_energy_class_variables_module5(parse):
         test_code
     ), """Are you declararing a constant `ENERGY_BITS`?
         Did you set it to `0x0F0` hex number?"""
-
 
 @pytest.mark.test_energy_get_energy_method_module5
 def test_energy_get_energy_method_module5(parse):
@@ -358,10 +196,145 @@ def test_energy_get_energy_method_module5(parse):
     ), """Are you returning `recs` from the `{}` method?""".format(test_method)
 
 
-@pytest.mark.test_energy_by_area_method_module5
-def test_energy_by_area_method_module5(parse):
+@pytest.mark.test_energy_convert_method_module5
+def test_energy_convert_method_module5(parse):
+    #    def _convert_data(self, data):
+    #         recs = []
+    #         for rec in data:
+    #               # Convert string of integers into actual integers based 16
+    #               recs.append(self._get_energy(rec))
+    #          return recs
+    test_file = "energy_info"
+    parent_class = "HouseInfo"
+    test_class = "EnergyData"
+    test_method = "_convert_data"
+
+    my_file = parse(test_file)
+    assert my_file.success, my_file.message
+
+    my_file_import = my_file.from_imports(
+        "house_info", "HouseInfo")
+    
+    assert my_file_import, "Are you importing `HouseInfo` from `house_info` in `{}` file".format(test_file)
+    my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
+    assert (
+        my_class.exists()
+    ), """Have you created a class called `{0}`?
+        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
+
+    # debug_test_case_class(my_class, test_method) 
+
+    my_method = my_file.class_(test_class).method(test_method)
+    assert (
+        my_method.exists()
+    ), "Are you defining a method called `{}`?".format(test_method)
+    
+    # debug_test_case(my_method) 
+    
+    my_class_arguments = (
+        my_class.def_args_(test_method).match(
+            {
+                "type": "FunctionDef",
+                "name": "_convert_data",
+                "args_type": "arguments",
+                "args_args_0_type": "arg",
+                "args_args_0_arg": "self",
+                "args_args_0_annotation": "nil",
+                "args_args_1_type": "arg",
+                "args_args_1_arg": "data",
+                "args_args_1_annotation": "nil",
+                "args_vararg": "nil",
+                "args_kwarg": "nil",
+            }
+        )
+        .exists()
+    )
+    assert (
+        my_class_arguments
+    ), """Are you defining a method `{0}` for the `{1}` class?
+        Are you declaring the correct name and number of parameters?""".format(test_method, test_class)
+    
+    # Check for assignment 
+    test_code = (
+        my_method.assign_().match(
+            {
+                "targets_0_type": "Name",
+                "targets_0_id": "recs",
+                "value_type": "List"
+            }
+        )
+        .exists()
+    )
+    assert (
+        test_code
+    ), "Are you creating a variable called `recs` set equal to an empty list?"
+    
+    test_code = (
+        my_method.for_().match(
+            {
+                "target_type": "Name",
+                "target_id": "rec",
+                "iter_type": "Name",
+                "iter_id": "data"
+            }
+        )
+        .exists()
+    )
+    assert (
+        test_code
+    ), """Do you have a `for` loop, looping through `data`? 
+        Is the current loop value called `rec`?"""
+
+    test_code = (
+        my_method.for_().match(
+            {
+                "0_type": "Expr",
+                "0_value_type": "Call",
+                "0_value_func_type": "Attribute",
+                "0_value_func_value_type": "Name",
+                "0_value_func_value_id": "recs",
+                "0_value_func_attr": "append",
+                "0_value_args_0_type": "Call",
+                "0_value_args_0_func_type": "Attribute",
+                "0_value_args_0_func_value_type": "Name",
+                "0_value_args_0_func_value_id": "self",
+                "0_value_args_0_func_attr": "_get_energy",
+                "0_value_args_0_args_0_type": "Name",
+                "0_value_args_0_args_0_id": "rec"
+            }
+        )
+        .exists()
+    )
+    assert (
+        test_code
+    ), """Inside your loop, are you converting `rec` value through `self._rec_energy()` method?
+        Are you appending it to `recs` list?"""
+    
+    test_code= (
+        my_method.returns_call().match(
+            {
+                "type": "Return",
+                "value_type": "Name",
+                "value_id": "recs"
+            }
+        )
+        .exists()
+    )
+    assert (
+        test_code
+    ), """Are you returning `recs` list from the `{}` method?""".format(test_method)
+
+
+@pytest.mark.test_energy_by_area_and_date_methods_module5
+def test_energy_by_area_and_date_methods_module5(parse):
+    # from datetime import date
     # def get_data_by_area(self, rec_area=0):
-    #     data = super().get_data_by_area("energy", rec_area)
+    #     data = super().get_data_by_area("energy_usage", rec_area)
+    #     return self._convert_data(recs)
+    #
+    # def get_data_by_date(self, rec_date=date.today()):
+    #     recs = super().get_data_by_date("energy_usage", rec_date)
+    #     return self._convert_data(recs)
     
     test_file = "energy_info"
     parent_class = "HouseInfo"
@@ -437,34 +410,6 @@ def test_energy_by_area_method_module5(parse):
         the `{}` method from the `{}` parent class?
         Are you passing "energy" as the only argument to the method call?""".format(test_method, parent_class)
 
-@pytest.mark.test_energy_by_area_method_return_module5
-def test_energy_by_area_method_return_module5(parse):
-    # ...
-    #     return self._convert_data(recs)
-    
-    test_file = "energy_info"
-    parent_class = "HouseInfo"
-    test_class = "EnergyData"
-    test_method = "get_data_by_area"
-    
-    my_file = parse(test_file)
-    assert my_file.success, my_file.message
-
-    my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
-    assert (
-        my_class.exists()
-    ), """Have you created a class called `{0}`?
-        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
-
-    # debug_test_case_class(my_class, test_method) 
-    
-    my_method = my_file.class_(test_class).method(test_method)
-    assert (
-        my_method.exists()
-    ), "Are you defining a method called `{}`?".format(test_method)
-    
-    # debug_test_case(my_method) 
-
     test_code = (
         my_method.returns_call().match(
             {
@@ -486,31 +431,12 @@ def test_energy_by_area_method_return_module5(parse):
         Are you calling the `_convert_data` method?
         Passing `recs` as the only argument?""".format(test_method)
 
-@pytest.mark.test_energy_by_date_method_module5
-def test_energy_by_date_method_module5(parse):
-    # from datetime import date
-    # def get_data_by_date(self, rec_date=date.today()):
-    #     recs = super().get_data_by_date("energy", rec_date)
-    
-    test_file = "energy_info"
-    parent_class = "HouseInfo"
-    test_class = "EnergyData"
+    # Now test get_data_by_date
     test_method = "get_data_by_date"
     
-    my_file = parse(test_file)
-    assert my_file.success, my_file.message
-
     my_file_import = my_file.from_imports(
         "datetime", "date")
     assert my_file_import, "Are you importing `date` from datetime in `{}`".format(test_file)
-    
-    my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
-    assert (
-        my_class.exists()
-    ), """Have you created a class called `{0}`?
-        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
-
-    # debug_test_case_class(my_class, test_method) 
     
     my_method = my_file.class_(test_class).method(test_method)
     assert (
@@ -573,32 +499,6 @@ def test_energy_by_date_method_module5(parse):
         the `{}` method from the `{}` parent class?
         Are you passing "energy" as the only argument to the method call?""".format(test_method, parent_class)
 
-@pytest.mark.test_energy_by_date_method_return_module5
-def test_energy_by_date_method_return_module5(parse):
-    # ...
-    #     return self._convert_data(recs)
-    
-    test_file = "energy_info"
-    parent_class = "HouseInfo"
-    test_class = "EnergyData"
-    test_method = "get_data_by_date"
-    
-    my_file = parse(test_file)
-    assert my_file.success, my_file.message
-
-    my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
-    assert (
-        my_class.exists()
-    ), """Have you created a class called `{0}`?
-        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
-
-    # debug_test_case_class(my_class, test_method) 
-    
-    my_method = my_file.class_(test_class).method(test_method)
-    assert (
-        my_method.exists()
-    ), "Are you defining a method called `{}`?".format(test_method)
-    
     # debug_test_case(my_method) 
 
     test_code = (
@@ -731,14 +631,15 @@ def test_energy_calculate_usage_method_module5(parse):
     ), """Are you returning a `total_energy` from the `{}` method?""".format(test_method)
 
 
-@pytest.mark.test_sensor_app_temp_info_by_area_module5
-def test_sensor_app_temp_info_by_area_module5(parse):
+@pytest.mark.test_sensor_app_energy_info_by_area_module5
+def test_sensor_app_energy_info_by_area_module5(parse):
     # from energy_info import EnergyData          # module 4
     # ...
     # energy_data = EnergyData(data)
     # recs = energy_data.get_data_by_area(rec_area=1)
-    # NOTE: print statements are not validated
-    # print("House Humidity sensor records for area 1 = {}".format(len(recs)))
+    # print("\nHouse Energy sensor records for area 1 = {}".format(len(recs)))
+    # total_energy = energy_data.calculate_energy_usage(data=recs)
+    # print("\tEnergy Usage: {:2.2} Watts".format(total_energy))
 
     test_file = "sensor_app"
     test_class = "EnergyData"
@@ -809,8 +710,10 @@ def test_sensor_app_temp_info_by_area_module5(parse):
                 "19_value_func_value_type": "Name",
                 "19_value_func_value_id": "energy_data",
                 "19_value_func_attr": "calculate_energy_usage",
-                "19_value_args_0_type": "Name",
-                "19_value_args_0_id": "recs",
+                "19_value_keywords_0_type": "keyword",
+                "19_value_keywords_0_arg": "data",
+                "19_value_keywords_0_value_type": "Name",
+                "19_value_keywords_0_value_id": "recs",
             }
         )
         .exists()
@@ -818,17 +721,18 @@ def test_sensor_app_temp_info_by_area_module5(parse):
     assert (
         test_code
     ), """Are you setting `total_energy` to the method call `calculate_energy_usage` from the `energy_data` object?
-        Are you passing `recs` as the only argument to the method?
+        Are you passing `data=recs` as the only argument to the method?
         """
 
 
-@pytest.mark.test_sensor_app_temp_info_by_date_module5
-def test_sensor_app_temp_info_by_date_module5(parse):
+@pytest.mark.test_sensor_app_energy_info_by_date_module5
+def test_sensor_app_energy_info_by_date_module5(parse):
     # ...
-    # recs = energy_data.get_data_by_date(test_date)
-    # NOTE: print statements are not validated
-    # print("House Humidity sensor records for date: {} = {}".format(test_date.strftime("%m/%d/%y"), len(recs)))
-    # print("\tMaximum: {0}, Minimum: {1}, and Averrage: {2} energys".format(max(recs), min(recs), mean(recs)))
+    # recs = energy_data.get_data_by_date(rec_date=test_date)
+    # print("House Energy sensor records for date: {} = {}".format(
+    #     test_date.strftime("%m/%d/%y"), len(recs)))
+    # total_energy = energy_data.calculate_energy_usage(data=recs)
+    # print("\tEnergy Usage: {:2.2} Watts".format(total_energy))
 
     test_file = "sensor_app"
     test_class = "EnergyData"
@@ -836,7 +740,7 @@ def test_sensor_app_temp_info_by_date_module5(parse):
     my_file = parse(test_file)
     assert my_file.success, my_file.message
 
-    # debug_test_case(my_file)    
+    # debug_test_case(my_file)   
 
     test_code = (
         my_file.assign_().match(
@@ -874,15 +778,10 @@ def test_sensor_app_temp_info_by_date_module5(parse):
                 "21_value_func_value_type": "Name",
                 "21_value_func_value_id": "energy_data",
                 "21_value_func_attr": "calculate_energy_usage",
-                "21_value_args_0_type": "Call",
-                "21_value_args_0_func_type": "Attribute",
-                "21_value_args_0_func_value_type": "Name",
-                "21_value_args_0_func_value_id": "energy_data",
-                "21_value_args_0_func_attr": "get_data_by_date",
-                "21_value_args_0_keywords_0_type": "keyword",
-                "21_value_args_0_keywords_0_arg": "rec_date",
-                "21_value_args_0_keywords_0_value_type": "Name",
-                "21_value_args_0_keywords_0_value_id": "test_date"
+                "21_value_keywords_0_type": "keyword",
+                "21_value_keywords_0_arg": "data",
+                "21_value_keywords_0_value_type": "Name",
+                "21_value_keywords_0_value_id": "recs"
             }
         )
         .exists()

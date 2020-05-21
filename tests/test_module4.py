@@ -2,22 +2,9 @@ import pytest
 from tests.template import debug_test_case, debug_test_case_class
 
 
-@pytest.mark.test_humidity_import_module4
-def test_humidity_import_module4(parse):
-    # from house_info import HouseInfo
-
-    test_file = "humidity_info"
-    
-    my_file = parse(test_file)
-    assert my_file.success, my_file.message
-
-    my_file_import = my_file.from_imports(
-        "house_info", "HouseInfo")
-    assert my_file_import, "Are you importing `HouseInfo` from `house_info` in `{}` file".format(test_file)
-
-
 @pytest.mark.test_humidity_create_class_module4
 def test_humidity_create_class_module4(parse):
+    # from house_info import HouseInfo
     # class HumidityData(HouseInfo):
     #    def _convert_data(self, data):
     #         recs = []
@@ -30,6 +17,10 @@ def test_humidity_create_class_module4(parse):
     my_file = parse(test_file)
     assert my_file.success, my_file.message
 
+    my_file_import = my_file.from_imports(
+        "house_info", "HouseInfo")
+    assert my_file_import, "Are you importing `HouseInfo` from `house_info` in `{}` file".format(test_file)
+    
     my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
     assert (
         my_class.exists()
@@ -169,9 +160,10 @@ def test_humidity_convert_loop_module4(parse):
 
 
 @pytest.mark.test_humidity_by_area_method_module4
-def test_humidity_by_area_method_module4(parse):
+def test_humidity_by_area_and_method_module4(parse):
     # def get_data_by_area(self, rec_area=0):
     #     data = super().get_data_by_area("humidity", rec_area)
+    #     return self._convert_data(recs)
     
     test_file = "humidity_info"
     parent_class = "HouseInfo"
@@ -247,35 +239,6 @@ def test_humidity_by_area_method_module4(parse):
         the `{}` method from the `{}` parent class?
         Are you passing "humidity" as the only argument to the method call?""".format(test_method, parent_class)
 
-
-@pytest.mark.test_humidity_by_area_method_return_module4
-def test_humidity_by_area_method_return_module4(parse):
-    # ...
-    #     return self._convert_data(recs)
-    
-    test_file = "humidity_info"
-    parent_class = "HouseInfo"
-    test_class = "HumidityData"
-    test_method = "get_data_by_area"
-    
-    my_file = parse(test_file)
-    assert my_file.success, my_file.message
-
-    my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
-    assert (
-        my_class.exists()
-    ), """Have you created a class called `{0}`?
-        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
-
-    # debug_test_case_class(my_class, test_method) 
-    
-    my_method = my_file.class_(test_class).method(test_method)
-    assert (
-        my_method.exists()
-    ), "Are you defining a method called `{}`?".format(test_method)
-    
-    # debug_test_case(my_method) 
-
     test_code = (
         my_method.returns_call().match(
             {
@@ -303,6 +266,7 @@ def test_humidity_by_date_method_module4(parse):
     # from datetime import date
     # def get_data_by_date(self, rec_date=date.today()):
     #     recs = super().get_data_by_date("humidity", rec_date)
+    #     return self._convert_data(recs)
     
     test_file = "humidity_info"
     parent_class = "HouseInfo"
@@ -385,35 +349,6 @@ def test_humidity_by_date_method_module4(parse):
         the `{}` method from the `{}` parent class?
         Are you passing "humidity" as the only argument to the method call?""".format(test_method, parent_class)
 
-
-@pytest.mark.test_humidity_by_date_method_return_module4
-def test_humidity_by_date_method_return_module4(parse):
-    # ...
-    #     return self._convert_data(recs)
-    
-    test_file = "humidity_info"
-    parent_class = "HouseInfo"
-    test_class = "HumidityData"
-    test_method = "get_data_by_date"
-    
-    my_file = parse(test_file)
-    assert my_file.success, my_file.message
-
-    my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
-    assert (
-        my_class.exists()
-    ), """Have you created a class called `{0}`?
-        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
-
-    # debug_test_case_class(my_class, test_method) 
-    
-    my_method = my_file.class_(test_class).method(test_method)
-    assert (
-        my_method.exists()
-    ), "Are you defining a method called `{}`?".format(test_method)
-    
-    # debug_test_case(my_method) 
-
     test_code = (
         my_method.returns_call().match(
             {
@@ -439,13 +374,13 @@ def test_humidity_by_date_method_return_module4(parse):
 @pytest.mark.test_sensor_app_temp_info_by_area_module4
 def test_sensor_app_temp_info_by_area_module4(parse):
     # from humidity_info import HumidityData          # module 4
-    # from statistics import mean . 
+    # from statistics import mean 
     # ...
     # humidity_data = HumidityData(data)
     # recs = humidity_data.get_data_by_area(rec_area=1)
     # NOTE: print statements are not validated
-    # print("House Humidity sensor records for area 1 = {}".format(len(recs)))
-    # print("\tMaximum: {0}, Minimum: {1}, and Averrage: {2} temperatures".format( max(recs), min(recs), mean(recs)))
+    # print("\nHouse Humidity sensor records for area 1 = {}".format(len(recs)))
+    # print("\tAverage: {} humidity".format(mean(recs)))
 
     test_file = "sensor_app"
     test_class = "HumidityData"
@@ -518,9 +453,8 @@ def test_sensor_app_temp_info_by_area_module4(parse):
 def test_sensor_app_temp_info_by_date_module4(parse):
     # ...
     # recs = humidity_data.get_data_by_date(test_date)
-    # NOTE: print statements are not validated
-    # print("House Humidity sensor records for date: {} = {}".format(test_date.strftime("%m/%d/%y"), len(recs)))
-    # print("\tMaximum: {0}, Minimum: {1}, and Averrage: {2} humiditys".format(max(recs), min(recs), mean(recs)))
+    # print("House Humidity sensor records for date: {} = {}".format( test_date.strftime("%m/%d/%y"), len(recs)))
+    # print("\tAverrage: {} humdity".format(mean(recs)))
 
     test_file = "sensor_app"
     test_class = "HumidityData"
@@ -556,22 +490,9 @@ def test_sensor_app_temp_info_by_date_module4(parse):
         """
 
 
-@pytest.mark.test_particle_import_module4
-def test_particle_import_module4(parse):
-    # from house_info import HouseInfo
-
-    test_file = "particle_count_info"
-    
-    my_file = parse(test_file)
-    assert my_file.success, my_file.message
-
-    my_file_import = my_file.from_imports(
-        "house_info", "HouseInfo")
-    assert my_file_import, "Are you importing `HouseInfo` from `house_info` in `{}` file".format(test_file)
-
-
 @pytest.mark.test_particle_create_class_module4
 def test_particle_create_class_module4(parse):
+    # from house_info import HouseInfo
     # class ParticleData(HouseInfo):
     #    def _convert_data(self, data):
     #         recs = []
@@ -584,6 +505,10 @@ def test_particle_create_class_module4(parse):
     my_file = parse(test_file)
     assert my_file.success, my_file.message
 
+    my_file_import = my_file.from_imports(
+        "house_info", "HouseInfo")
+    assert my_file_import, "Are you importing `HouseInfo` from `house_info` in `{}` file".format(test_file)
+    
     my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
     assert (
         my_class.exists()
@@ -718,10 +643,16 @@ def test_particle_convert_loop_module4(parse):
     ), """Are you returning `recs` list from the `{}` method?""".format(test_method)
 
 
-@pytest.mark.test_particle_by_area_method_module4
-def test_particle_by_area_method_module4(parse):
+@pytest.mark.test_particle_by_area_and_date_methods_module4
+def test_particle_by_area_and_date_methods_module4(parse):
+    # from datetime import date
     # def get_data_by_area(self, rec_area=0):
     #     data = super().get_data_by_area("particle", rec_area)
+    #     return self._convert_data(recs)
+    # 
+    # def get_data_by_date(self, rec_date=date.today()):
+    #     recs = super().get_data_by_date("particle", rec_date)
+    #     return self._convert_data(recs)
     
     test_file = "particle_count_info"
     parent_class = "HouseInfo"
@@ -797,35 +728,6 @@ def test_particle_by_area_method_module4(parse):
         the `{}` method from the `{}` parent class?
         Are you passing "particle" as the only argument to the method call?""".format(test_method, parent_class)
 
-
-@pytest.mark.test_particle_by_area_method_return_module4
-def test_particle_by_area_method_return_module4(parse):
-    # ...
-    #     return self._convert_data(recs)
-    
-    test_file = "particle_count_info"
-    parent_class = "HouseInfo"
-    test_class = "ParticleData"
-    test_method = "get_data_by_area"
-    
-    my_file = parse(test_file)
-    assert my_file.success, my_file.message
-
-    my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
-    assert (
-        my_class.exists()
-    ), """Have you created a class called `{0}`?
-        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
-
-    # debug_test_case_class(my_class, test_method) 
-    
-    my_method = my_file.class_(test_class).method(test_method)
-    assert (
-        my_method.exists()
-    ), "Are you defining a method called `{}`?".format(test_method)
-    
-    # debug_test_case(my_method) 
-
     test_code = (
         my_method.returns_call().match(
             {
@@ -847,21 +749,9 @@ def test_particle_by_area_method_return_module4(parse):
         Are you calling the `_convert_data` method?
         Passing `recs` as the only argument?""".format(test_method)
 
-
-@pytest.mark.test_particle_by_date_method_module4
-def test_particle_by_date_method_module4(parse):
-    # from datetime import date
-    # def get_data_by_date(self, rec_date=date.today()):
-    #     recs = super().get_data_by_date("particle", rec_date)
-    
-    test_file = "particle_count_info"
-    parent_class = "HouseInfo"
-    test_class = "ParticleData"
+    # Now test the get_data_by_date method
     test_method = "get_data_by_date"
     
-    my_file = parse(test_file)
-    assert my_file.success, my_file.message
-
     my_file_import = my_file.from_imports(
         "datetime", "date")
     assert my_file_import, "Are you importing `date` from datetime in `{}`".format(test_file)
@@ -872,15 +762,11 @@ def test_particle_by_date_method_module4(parse):
     ), """Have you created a class called `{0}`?
         Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
 
-    # debug_test_case_class(my_class, test_method) 
-    
     my_method = my_file.class_(test_class).method(test_method)
     assert (
         my_method.exists()
     ), "Are you defining a method called `{}`?".format(test_method)
     
-    # debug_test_case(my_method) 
-
     my_class_arguments = (
         my_class.def_args_(test_method).match(
             {
@@ -935,35 +821,6 @@ def test_particle_by_date_method_module4(parse):
         the `{}` method from the `{}` parent class?
         Are you passing "particle" as the only argument to the method call?""".format(test_method, parent_class)
 
-
-@pytest.mark.test_particle_by_date_method_return_module4
-def test_particle_by_date_method_return_module4(parse):
-    # ...
-    #     return self._convert_data(recs)
-    
-    test_file = "particle_count_info"
-    parent_class = "HouseInfo"
-    test_class = "ParticleData"
-    test_method = "get_data_by_date"
-    
-    my_file = parse(test_file)
-    assert my_file.success, my_file.message
-
-    my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
-    assert (
-        my_class.exists()
-    ), """Have you created a class called `{0}`?
-        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
-
-    # debug_test_case_class(my_class, test_method) 
-    
-    my_method = my_file.class_(test_class).method(test_method)
-    assert (
-        my_method.exists()
-    ), "Are you defining a method called `{}`?".format(test_method)
-    
-    # debug_test_case(my_method) 
-
     test_code = (
         my_method.returns_call().match(
             {
@@ -986,15 +843,164 @@ def test_particle_by_date_method_return_module4(parse):
         Passing `recs` as the only argument?""".format(test_method)
 
 
+@pytest.mark.test_particle_get_concentration_method_module4
+def test_particle_get_concentration_method_module4(parse):
+    # def get_data_concentrations(self, data):
+    #       particulate = {"good": 0, "moderate": 0, "bad": 0}
+
+    test_file = "particle_count_info"
+    parent_class = "HouseInfo"
+    test_class = "ParticleData"
+    test_method = "get_data_concentrations"
+
+    my_file = parse(test_file)
+    assert my_file.success, my_file.message
+
+    my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
+    assert (
+        my_class.exists()
+    ), """Have you created a class called `{0}`?
+        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
+
+    my_method = my_file.class_(test_class).method(test_method)
+    assert (
+        my_method.exists()
+    ), "Are you defining a method called `{}`?".format(test_method)
+    
+    # debug_test_case_class(my_class, test_method)  
+    # debug_test_case(my_method)  
+    
+    my_class_arguments = (
+        my_class.def_args_(test_method).match(
+            {
+                "type": "FunctionDef",
+                "name": "get_data_concentrations",
+                "args_type": "arguments",
+                "args_args_0_type": "arg",
+                "args_args_0_arg": "self",
+                "args_args_0_annotation": "nil",
+                "args_args_1_type": "arg",
+                "args_args_1_arg": "data",
+                "args_args_1_annotation": "nil",
+                "args_vararg": "nil",
+                "args_kwarg": "nil",
+            }
+        )
+        .exists()
+    )
+    assert (
+        my_class_arguments
+    ), """Are you defining a method `{0}` for the `{1}` class?
+        Are you declaring the correct name and number of parameters?""".format(test_method, test_class)
+    
+    # Check for assignment 
+    test_code = (
+        my_method.assign_().match(
+            {
+                "type": "Assign",
+                "targets_0_type": "Name",
+                "targets_0_id": "particulate",
+                "value_type": "Dict",
+                "value_keys_0_type": "Constant",
+                "value_keys_0_value": "good",
+                "value_keys_1_type": "Constant",
+                "value_keys_1_value": "moderate",
+                "value_keys_2_type": "Constant",
+                "value_keys_2_value": "bad",
+                "value_values_0_type": "Constant",
+                "value_values_0_value": 0,
+                "value_values_1_type": "Constant",
+                "value_values_1_value": 0,
+                "value_values_2_type": "Constant",
+                "value_values_2_value": 0
+            }
+        )
+        .exists()
+    )
+    assert (
+        test_code
+    ), """Are you creating a dictionary called `particulate`?
+        Are you initializing it with three entries?
+        "good", "moderate", and "bad", all set equal to zero?"""
+
+    
+@pytest.mark.test_particle_get_concentration_for_module4
+def test_particle_get_concentration_for_module4(parse):
+        # for rec in data:
+        #     # Select particulate concentration
+        #     if rec <= 50.0:
+        #         particulate["good"] += 1
+        #     elif rec > 50.0 and rec < 100:
+        #         particulate["moderate"] += 1
+        #     else:
+        #         particulate["bad"] += 1
+
+        # return particulate
+
+    test_file = "particle_count_info"
+    parent_class = "HouseInfo"
+    test_class = "ParticleData"
+    test_method = "get_data_concentrations"
+
+    my_file = parse(test_file)
+    assert my_file.success, my_file.message
+
+    my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
+    assert (
+        my_class.exists()
+    ), """Have you created a class called `{0}`?
+        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
+
+    my_method = my_file.class_(test_class).method(test_method)
+    assert (
+        my_method.exists()
+    ), "Are you defining a method called `{}`?".format(test_method)
+    
+    # debug_test_case(my_method)  
+    
+    # Check for assignment 
+    test_code = (
+        my_method.for_().match(
+            {
+                "target_type": "Name",
+                "target_id": "rec",
+                "iter_type": "Name",
+                "iter_id": "data"
+            }
+        )
+        .exists()
+    )
+    assert (
+        test_code
+    ), """Are you creating a loop over `data`?
+        Are you using `rec` as the iterator?"""
+
+    test_code = (
+        my_method.returns_call().match(
+            {
+                "type": "Return",
+                "value_type": "Name",
+                "value_id": "particulate"
+            }
+        )
+        .exists()
+    )
+    assert (
+        test_code
+    ), """Are you returning `particulate` from the method?"""
+    
+
 @pytest.mark.test_sensor_app_particle_info_by_area_module4
 def test_sensor_app_particle_info_by_area_module4(parse):
     # from particle_count_info import ParticleData          # module 4
     # ...
     # particle_data = ParticleData(data)
     # recs = particle_data.get_data_by_area(rec_area=1)
-    # NOTE: print statements are not validated
-    # print("House Humidity sensor records for area 1 = {}".format(len(recs)))
-    # print("\tMaximum: {0}, Minimum: {1}, and Averrage: {2} temperatures".format( max(recs), min(recs), mean(recs)))
+    # print("\nHouse Particle sensor records for area 1 = {}".format(len(recs)))
+    # concentrations = particle_data.get_data_concentrations(data=recs)
+    # print("\tGood Air Quality Recs: {}".format(concentrations["good"]))
+    # print("\tModerate Air Quality Recs: {}".format(concentrations["moderate"]))
+    # print("\tBad Air Quality Recs: {}".format(concentrations["bad"]))
 
     test_file = "sensor_app"
     test_class = "ParticleData"
@@ -1006,7 +1012,7 @@ def test_sensor_app_particle_info_by_area_module4(parse):
         "particle_count_info", "ParticleData")
     assert my_file_import, "Are you importing `ParticleData` from `particle_count_info` in `{}`".format(test_file)
 
-    # debug_test_case(my_file)    
+    # debug_test_case(my_file)   
 
     test_code = (
         my_file.assign_().match(
@@ -1059,7 +1065,7 @@ def test_sensor_app_particle_info_by_area_module4(parse):
             {
                 "14_type": "Assign",
                 "14_targets_0_type": "Name",
-                "14_targets_0_id": "recs",
+                "14_targets_0_id": "concentrations",
                 "14_value_type": "Call",
                 "14_value_func_type": "Attribute",
                 "14_value_func_value_type": "Name",
@@ -1067,34 +1073,29 @@ def test_sensor_app_particle_info_by_area_module4(parse):
                 "14_value_func_attr": "get_data_concentrations",
                 "14_value_keywords_0_type": "keyword",
                 "14_value_keywords_0_arg": "data",
-                "14_value_keywords_0_value_type": "Call",
-                "14_value_keywords_0_value_func_type": "Attribute",
-                "14_value_keywords_0_value_func_value_type": "Name",
-                "14_value_keywords_0_value_func_value_id": "particle_data",
-                "14_value_keywords_0_value_func_attr": "get_data_by_area",
-                "14_value_keywords_0_value_keywords_0_type": "keyword",
-                "14_value_keywords_0_value_keywords_0_arg": "rec_area",
-                "14_value_keywords_0_value_keywords_0_value_type": "Constant",
-                "14_value_keywords_0_value_keywords_0_value_value": 1,
+                "14_value_keywords_0_value_type": "Name",
+                "14_value_keywords_0_value_id": "recs",
             }
         )
         .exists()
     )
     assert (
         test_code
-    ), """Are you setting `recs` to the method call `get_data_concentration` from the `particle_data` object?
-        Are you passing another method call `get_data_by_area` from the same `particle_data` object as the input parameter?
-        Are you passing `"rec_area=1"` as the only argument to the `get_data_by_area` method?
+    ), """Are you setting `concentrations` to the method call `get_data_concentrations` from the `particle_data` object?
+        Are you passing `recs` as the only argument to the method?
         """
 
 
 @pytest.mark.test_sensor_app_particle_info_by_date_module4
 def test_sensor_app_particle_info_by_date_module4(parse):
     # ...
-    # recs = particle_data.get_data_by_date(test_date)
-    # NOTE: print statements are not validated
-    # print("House Humidity sensor records for date: {} = {}".format(test_date.strftime("%m/%d/%y"), len(recs)))
-    # print("\tMaximum: {0}, Minimum: {1}, and Averrage: {2} particles".format(max(recs), min(recs), mean(recs)))
+    # recs = particle_data.get_data_by_date(rec_date=test_date)
+    # print("\nHouse Particle sensor records for date: {} = {}".format(
+    #     test_date.strftime("%m/%d/%y"), len(recs)))
+    # concentrations = particle_data.get_data_concentrations(data = recs)
+    # print("\tGood Air Quality Recs: {}".format(concentrations["good"]))
+    # print("\tModerate Air Quality Recs: {}".format(concentrations["moderate"]))
+    # print("\tBad Air Quality Recs: {}".format(concentrations["bad"]))
 
     test_file = "sensor_app"
     test_class = "ParticleData"
@@ -1134,7 +1135,7 @@ def test_sensor_app_particle_info_by_date_module4(parse):
             {
                 "16_type": "Assign",
                 "16_targets_0_type": "Name",
-                "16_targets_0_id": "recs",
+                "16_targets_0_id": "concentrations",
                 "16_value_type": "Call",
                 "16_value_func_type": "Attribute",
                 "16_value_func_value_type": "Name",
@@ -1142,21 +1143,14 @@ def test_sensor_app_particle_info_by_date_module4(parse):
                 "16_value_func_attr": "get_data_concentrations",
                 "16_value_keywords_0_type": "keyword",
                 "16_value_keywords_0_arg": "data",
-                "16_value_keywords_0_value_type": "Call",
-                "16_value_keywords_0_value_func_type": "Attribute",
-                "16_value_keywords_0_value_func_value_type": "Name",
-                "16_value_keywords_0_value_func_value_id": "particle_data",
-                "16_value_keywords_0_value_func_attr": "get_data_by_date",
-                "16_value_keywords_0_value_keywords_0_type": "keyword",
-                "16_value_keywords_0_value_keywords_0_arg": "rec_date",
-                "16_value_keywords_0_value_keywords_0_value_type": "Name",
-                "16_value_keywords_0_value_keywords_0_value_id": "test_date"
+                "16_value_keywords_0_value_type": "Name",
+                "16_value_keywords_0_value_id": "recs",
             }
         )
         .exists()
     )
     assert (
         test_code
-    ), """Are you setting `recs` to the method call `get_data_by_date` from the `particle_data` object?
-        Are you passing `rec_date=test_date` as the only argument to the method?
+    ), """Are you setting `concentrations` to the method call `get_data_concentrations` from the `particle_data` object?
+        Are you passing `recs` as the only argument to the method?
         """
