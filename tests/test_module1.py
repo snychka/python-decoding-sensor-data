@@ -320,7 +320,7 @@ def test_load_data_load_recs_module1(parse):
     # Test Length of return value
     # recs = load_sensor_data() # this is defined above
     assert (
-        len(data_len) == 2000
+        len(recs) == 2000
     ), """The length of your sensor_data list is incorrect. 
         Are you scanning both data files?"""
 

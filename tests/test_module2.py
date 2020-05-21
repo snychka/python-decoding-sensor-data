@@ -7,6 +7,12 @@ try:
 except ImportError:
     recs = 0
 
+try:
+    from sensor.house_info import HouseInfo
+    home_info = HouseInfo(recs)
+except ImportError:
+    home_info = 0
+
 from datetime import date, datetime
 
 @pytest.mark.test_house_info_create_class_module2
@@ -200,7 +206,7 @@ def test_house_info_get_data_by_area_loop_module2(parse):
 
     # Test filer options:
     # recs = sensor.load_data.load_sensor_data()    # defined at top of file
-    home_info = sensor.house_info.HouseInfo(recs)
+    home_info = HouseInfo(recs)
     home_temp = home_info.get_data_by_area("id")
     assert (
         len(home_temp) == 2000
@@ -404,8 +410,8 @@ def test_house_info_get_data_by_date_loop_module2(parse):
 
 
     # Test filer options:
-    # recs = sensor.load_data.load_sensor_data()    # defined at top of file
-    home_info = sensor.house_info.HouseInfo(recs)
+    # recs = load_sensor_data()    # defined at top of file
+    home_info = HouseInfo(recs)
     home_temp = home_info.get_data_by_date("id")
     assert (
         len(home_temp) == 0
