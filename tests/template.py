@@ -1,6 +1,7 @@
 import os.path
 import warnings
 import ast
+import json
 
 from tests.nodes import convert_node
 
@@ -563,3 +564,23 @@ def is_ast_equal(sample, template):
         return True
     except TemplateMismatch:
         return False
+
+
+def debug_test_case(node):
+    """Print JSON parser nodes
+
+    Arguments:
+        node {[type]} -- [description]
+    """
+    print(json.dumps(node.assign_().n, indent=4)) 
+    print(json.dumps(node.for_().n, indent=4)) 
+    print(json.dumps(node.returns_call().n, indent=4))
+
+
+def debug_test_case_class(node, test_method):
+    """Print JSON parser nodes for class properties
+
+    Arguments:
+        node {[type]} -- [description]
+    """
+    print(json.dumps(node.def_args_(test_method).n, indent=4))

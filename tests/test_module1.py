@@ -1,7 +1,11 @@
 import pytest
 import json
 
-from sensor.load_data import load_sensor_data as lsd
+try:
+    from sensor.load_data import load_sensor_data 
+    recs = load_sensor_data()
+except ImportError:
+    recs = 0
 
 @pytest.mark.test_load_data_import_module1
 def test_load_data_import_module1(parse):
@@ -53,7 +57,6 @@ def test_load_data_load_sensor_func_module1(parse):
 @pytest.mark.test_load_data_sensor_files_module1
 def test_load_data_sensor_files_module1(parse):
 
-    # def load_sensor_data():
     #   ....
     #   sensor_files = glob.glob(os.path.join(os.getcwd(), 'datasets', '*.csv'))
 
@@ -107,11 +110,9 @@ def test_load_data_sensor_files_module1(parse):
     ), "Are you creating a variable called `sensor_files` and assigning it glob.glob() and passing os.path.join()? Are you passing 3 values to os.path.join()?"
 
 
-
 @pytest.mark.test_load_data_read_files_module1
 def test_load_data_read_files_module1(parse):
 
-    # def load_sensor_data():
     #   ....
     # for sensor_file in sensor_files:
     #     with open(sensor_file) as data_file:
@@ -317,10 +318,9 @@ def test_load_data_load_recs_module1(parse):
     ), 'Are you returning `sensor_data` from `load_sensor_data` function?'
 
     # Test Length of return value
-    # data_len = load_sensor_data()
-    data_len = lsd()
+    # recs = load_sensor_data() # this is defined above
     assert (
-        len(data_len) == 2000
+        len(recs) == 2000
     ), """The length of your sensor_data list is incorrect. 
         Are you scanning both data files?"""
 
@@ -385,14 +385,9 @@ def test_sensor_app_load_data_return_module1(parse):
     # data = load_sensor_data()
     # print("Loaded records {}".format(len(data)))
 
-
     load_sensor_data_import = sensor.from_imports(
         "load_data", "load_sensor_data")
     assert load_sensor_data_import, "Are you importing `load_sensor_data` from load_data?"
-
-    # print(json.dumps(sensor.assign_().n, indent=2))
-    # print(json.dumps(sensor.calls().n, indent=2))
-    # assert False
 
     data = (
         sensor.assign_().match(
@@ -410,29 +405,3 @@ def test_sensor_app_load_data_return_module1(parse):
     assert (
         data
     ), "Are you creating a variable called `data` set equal to `load_sensor_data()` function?"
-    
-    # print_data = (
-    #     sensor.calls().match(
-    #         {
-    #             "type": "Expr",
-    #             "value_type": "Call",
-    #             "value_func_type": "Name",
-    #             "value_func_id": "print",
-    #             "value_args_0_type": "Call",
-    #             "value_args_0_func_type": "Attribute",
-    #             "value_args_0_func_value_type": "Constant",
-    #             "value_args_0_func_value_value": "Loaded records: {}",
-    #             "value_args_0_func_attr": "format",
-    #             "value_args_0_args_0_type": "Call",
-    #             "value_args_0_args_0_func_type": "Name",
-    #             "value_args_0_args_0_func_id": "len",
-    #             "value_args_0_args_0_args_0_type": "Name",
-    #             "value_args_0_args_0_args_0_id": "data"
-    #         }
-    #     )
-    #     .exists()
-    # )
-    # assert (
-    #     print_data
-    # ), "Are you calling `print()` and passing in `format()`? Are you passing 1 values to `format()` `len(data)`"
-    
