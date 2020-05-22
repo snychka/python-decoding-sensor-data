@@ -243,7 +243,8 @@ def test_temperature_by_area_method_module3(parse):
         test_code
     ), """Are you creating a variable called `recs` set equal to 
         the `{}` method from the `{}` parent class?
-        Are you passing "temperature" as the only argument to the method call?""".format(test_method, parent_class)
+        Are you passing `"temperature"` as the first argument to the method call?
+        Are you passing `rec_area` as the second argument to the method call?""".format(test_method, parent_class)
 
 @pytest.mark.test_temperature_by_area_method_return_module3
 def test_temperature_by_area_method_return_module3(parse):
@@ -310,7 +311,7 @@ def test_temperature_by_date_method_module3(parse):
 
     my_file_import = my_file.from_imports(
         "datetime", "date")
-    assert my_file_import, "Are you importing `date` from datetime in `{}`".format(test_file)
+    assert my_file_import, "Are you importing `date` from `datetime` in `{}`".format(test_file)
     
     my_class = my_file.query("class {0}({1}): ??".format(test_class, parent_class))
     assert (
@@ -379,7 +380,8 @@ def test_temperature_by_date_method_module3(parse):
         test_code
     ), """Are you creating a variable called `recs` set equal to 
         the `{}` method from the `{}` parent class?
-        Are you passing "temperature" as the only argument to the method call?""".format(test_method, parent_class)
+        Are you passing `"temperature"` as the first argument to the method call?
+        Are you passing `rec_date` as the second argument to the method call?""".format(test_method, parent_class)
 
 @pytest.mark.test_temperature_by_date_method_return_module3
 def test_temperature_by_date_method_return_module3(parse):
@@ -449,7 +451,7 @@ def test_sensor_app_temp_info_by_area_module3(parse):
 
     my_file_import = my_file.from_imports(
         "temperature_info", "TemperatureData")
-    assert my_file_import, "Are you importing `TemperatureData` from `temperature_info` in `{}`".format(test_file)
+    assert my_file_import, "Are you importing `{0}` from `temperature_info` in `{}`".format(test_file)
 
     # debug_test_case(my_file)    
 
@@ -470,8 +472,8 @@ def test_sensor_app_temp_info_by_area_module3(parse):
     )
     assert (
         test_code
-    ), """Are you creating an instance of the '{}' class with 
-        `data` list as the initialization argument for the constructor?
+    ), """Are you creating an instance of the '{}' class called `temperature_data`?
+        Are you passing `data` list as the initialization argument for the constructor?
         """.format(test_class)
     
     test_code = (

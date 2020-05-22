@@ -25,9 +25,9 @@ def test_energy_create_class_module5(parse):
     assert (
         my_class.exists()
     ), """Have you created a class called `{0}`?
-        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
+        Is your class inheriting the properties of the `{1}` class?""".format(test_class, parent_class)
 
-    # debug_test_case_class(my_class, test_method) 
+    debug_test_case_class(my_class, test_method) 
     
     test_code = (
         my_class.assign_().match(
@@ -37,18 +37,7 @@ def test_energy_create_class_module5(parse):
                 "0_targets_0_id": "ENERGY_PER_BULB",
                 "0_value_type": "Constant",
                 "0_value_value": "#<float>",
-            }
-        )
-        .exists()
-    )
-    assert (
-        test_code
-    ), """Are you declararing a constant `ENERGY_PER_BULB`?
-        Did you set it to `0.2` float number?"""
-    
-    test_code = (
-        my_class.assign_().match(
-            {
+                
                 "1_type": "Assign",
                 "1_targets_0_type": "Name",
                 "1_targets_0_id": "ENERGY_BITS",
@@ -60,8 +49,11 @@ def test_energy_create_class_module5(parse):
     )
     assert (
         test_code
-    ), """Are you declararing a constant `ENERGY_BITS`?
+    ), """Are you declararing a constant `ENERGY_PER_BULB`?
+        Did you set it to `0.2` float number?
+        Are you declararing a constant `ENERGY_BITS`?
         Did you set it to `0x0F0` hex number?"""
+    
 
 @pytest.mark.test_energy_get_energy_method_module5
 def test_energy_get_energy_method_module5(parse):
@@ -70,7 +62,6 @@ def test_energy_get_energy_method_module5(parse):
     #     rec = rec & ENERGY_BITS                 # mask ENERGY bits
     #     rec = rec >> 4                          # shift right
     #     return rec
-
     test_file = "energy_info"
     parent_class = "HouseInfo"
     test_class = "EnergyData"
@@ -670,8 +661,8 @@ def test_sensor_app_energy_info_by_area_module5(parse):
     )
     assert (
         test_code
-    ), """Are you creating an instance of the '{}' class with 
-        `data` list as the initialization argument for the constructor?
+    ), """Are you creating an instance of the '{}' class called `energy_data`
+        Are you passing `data` as the initialization argument for the constructor?
         """.format(test_class)
     
     test_code = (
@@ -789,6 +780,5 @@ def test_sensor_app_energy_info_by_date_module5(parse):
     assert (
         test_code
     ), """Are you setting `total_energy` to the method call `calculate_energy` from the `energy_data` object?
-        Are you pasing `get_data_by_date` method of the same object as input argument?
-        Are you passing `rec_date=test_date` as the argument to `get_data_by_date` method?
+        Are you passing `data=recs` as the only argument to the method?
         """
