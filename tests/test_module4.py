@@ -92,7 +92,7 @@ def test_humidity_convert_loop_module4(parse):
     assert (
         my_class.exists()
     ), """Have you created a class called `{0}`?
-        Is your class inheritings the properties of the `{1}` class?""".format(test_class, parent_class)
+        Is your class inheriting the properties of the `{1}` class?""".format(test_class, parent_class)
 
     my_method = my_file.class_(test_class).method(test_method)
     assert (
@@ -141,7 +141,7 @@ def test_humidity_convert_loop_module4(parse):
     )
     assert (
         test_code
-    ), """Inside your loop, are you converting `rec` value to `float()` and multipling it by `100`
+    ), """Inside your loop, are you converting `rec` value to `float()` and multiplying it by `100`?
         Are you appending it to `recs` list?"""
     
     test_code= (
@@ -237,7 +237,8 @@ def test_humidity_by_area_and_method_module4(parse):
         test_code
     ), """Are you creating a variable called `recs` set equal to 
         the `{}` method from the `{}` parent class?
-        Are you passing "humidity" as the only argument to the method call?""".format(test_method, parent_class)
+        Are you passing `"humidity"` as the first argument to the method call?
+        Are you passing `rec_area` as the second argument to the method call?""".format(test_method, parent_class)
 
     test_code = (
         my_method.returns_call().match(
@@ -347,7 +348,8 @@ def test_humidity_by_date_method_module4(parse):
         test_code
     ), """Are you creating a variable called `recs` set equal to 
         the `{}` method from the `{}` parent class?
-        Are you passing "humidity" as the only argument to the method call?""".format(test_method, parent_class)
+        Are you passing `"humidity"` as the first argument to the method call?
+        Are you passing `rec_date` as the second argument to the method call?""".format(test_method, parent_class)
 
     test_code = (
         my_method.returns_call().match(
@@ -392,9 +394,6 @@ def test_sensor_app_temp_info_by_area_module4(parse):
         "humidity_info", "HumidityData")
     assert my_file_import, "Are you importing `HumidityData` from `humidity_info` in `{}`".format(test_file)
 
-    my_file_import = my_file.from_imports(
-        "statistics", "mean")
-    assert my_file_import, "Are you importing `mean` from `statistics` in `{}`".format(test_file)
     
     # debug_test_case(my_file)    
 
@@ -415,8 +414,8 @@ def test_sensor_app_temp_info_by_area_module4(parse):
     )
     assert (
         test_code
-    ), """Are you creating an instance of the '{}' class with 
-        `data` list as the initialization argument for the constructor?
+    ), """Are you creating an instance of the '{}' class called `humidity_data`?
+        Are you passing `data` as the initialization argument for the constructor?
         """.format(test_class)
     
     test_code = (
@@ -726,7 +725,8 @@ def test_particle_by_area_and_date_methods_module4(parse):
         test_code
     ), """Are you creating a variable called `recs` set equal to 
         the `{}` method from the `{}` parent class?
-        Are you passing "particle" as the only argument to the method call?""".format(test_method, parent_class)
+        Are you passing `"particulate"` as the first argument to the method call?
+        Are you passing `rec_area` as the second argument to the method call?""".format(test_method, parent_class)
 
     test_code = (
         my_method.returns_call().match(
@@ -819,7 +819,8 @@ def test_particle_by_area_and_date_methods_module4(parse):
         test_code
     ), """Are you creating a variable called `recs` set equal to 
         the `{}` method from the `{}` parent class?
-        Are you passing "particle" as the only argument to the method call?""".format(test_method, parent_class)
+        Are you passing `"particulate"` as the first argument to the method call?
+        Are you passing `rec_date`as the second argument to the method call?""".format(test_method, parent_class)
 
     test_code = (
         my_method.returns_call().match(
@@ -1031,8 +1032,8 @@ def test_sensor_app_particle_info_by_area_module4(parse):
     )
     assert (
         test_code
-    ), """Are you creating an instance of the '{}' class with 
-        `data` list as the initialization argument for the constructor?
+    ), """Are you creating an instance of the '{}' class called `particle_data`?
+        Are you passing `data` as the initialization argument for the constructor?
         """.format(test_class)
     
     test_code = (

@@ -525,7 +525,7 @@ def test_sensor_app_house_info_by_date_module2(parse):
 
     my_file_import = my_file.from_imports(
         "datetime", "date")
-    assert my_file_import, "Are you importing `datetime` from `datetime` module?"
+    assert my_file_import, "Are you importing `date` from `datetime` module?"
     
     # debug_test_case(my_file)    
     
@@ -550,7 +550,7 @@ def test_sensor_app_house_info_by_date_module2(parse):
     )
     assert (
         test_code
-    ),  """Are you creating an instance of the `datetime` class called `record_date` 
+    ),  """Are you creating an instance of the `datetime` class called `test_date` 
             which takes `"5/9/20"` and `"%m/%d/%y"` as the two arguments?"""
     
     test_code = (
