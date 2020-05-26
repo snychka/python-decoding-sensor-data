@@ -4,11 +4,9 @@
 ##############################
 # Do not remove these two lines
 # They are needed to validate your unittest
-recs = 0
+data = []
 print("Sensor Data App")
 ##############################
-
-# Module 1 code here:
 
 # Module 2 code here:
 
@@ -17,3 +15,5 @@ print("Sensor Data App")
 # Module 4 code here:
 
 # Module 5 code here:
+
+# Module 6 code here:
