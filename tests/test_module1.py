@@ -328,70 +328,32 @@ def test_load_data_load_recs_module1(parse):
 
 @pytest.mark.test_sensor_app_load_data_return_module1
 def test_sensor_app_load_data_return_module1(parse):
-    # First, let's verify the user did not accidentally deleted
-    # the two lines provided for them. 
-
+    # from load_data import load_sensor_data
     # data = []                   # list to store data read from files
     # print("Sensor Data App")
-
-    sensor = parse("sensor_app")
-    assert sensor.success, sensor.message
+    # 
+    # data = load_sensor_data()
+    # print("Loaded records {}".format(len(data)))
     
-    original_data = (
-        sensor.assign_().match(
+    test_file = "sensor_app"
+    test_class = "HouseInfo"
+    test_method = "__init__"
+
+    my_file = parse(test_file)
+    assert my_file.success, my_file.message
+    
+
+    my_file_import = my_file.from_imports(
+        "load_data", "load_sensor_data")
+    assert my_file_import, "Are you importing `load_sensor_data` from `load_data`?"
+
+    data = (
+        my_file.assign_().match(
             {
                 "0_type": "Assign",
                 "0_targets_0_type": "Name",
                 "0_targets_0_id": "data",
                 "0_value_type": "List",
-            }
-        )
-    .exists()
-    )
-    assert (
-        original_data
-    ), """Do you have a `data` variable set to an empty list on top of the file? 
-        You  need to have these two lines of code before you being testing Module1
-        data = []        
-        print("Sensor Data App")
-        """
-    
-    print_app = (
-        sensor.calls().match(
-            {
-                "type": "Expr",
-                "value_type": "Call",
-                "value_func_type": "Name",
-                "value_func_id": "print",
-                "value_args_0_type": "Constant",
-                "value_args_0_value": "Sensor Data App"
-            }
-        )
-        .exists()
-    )
-    assert (
-        print_app
-    ), """Do you have a `print("Sensor Data App")` statement? 
-        You  need to have these two lines of code before you being testing Module1
-        data = []            
-        print("Sensor Data App")"""
-
-
-    ######################################################
-    # Now we can test the actual module
-    ######################################################
-    
-    # from load_data import load_sensor_data
-    # data = load_sensor_data()
-    # print("Loaded records {}".format(len(data)))
-
-    load_sensor_data_import = sensor.from_imports(
-        "load_data", "load_sensor_data")
-    assert load_sensor_data_import, "Are you importing `load_sensor_data` from load_data?"
-
-    data = (
-        sensor.assign_().match(
-            {
                 "1_type": "Assign",
                 "1_targets_0_type": "Name",
                 "1_targets_0_id": "data",
@@ -404,4 +366,8 @@ def test_sensor_app_load_data_return_module1(parse):
     )
     assert (
         data
-    ), "Are you creating a variable called `data` set equal to `load_sensor_data()` function?"
+    ), """Do you have a `data` variable set to an empty list on top of the file? 
+        Did you delete the starting code ?
+        data = []        
+        print("Sensor Data App")
+        In a new line, are you setting `data` to `load_sensor_data()` function call?"""
