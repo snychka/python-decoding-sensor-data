@@ -86,7 +86,7 @@ def test_temperature_create_class_module3(parse):
 def test_temperature_convert_loop_module3(parse):
     # for rec in data:
     #     # Convert string of integers into actual integers based 10
-    #     recs.append(int(rec, 10))
+    #     recs.append(int(rec, base=10))
     # return recs
 
     test_file = "temperature_info"
@@ -140,15 +140,17 @@ def test_temperature_convert_loop_module3(parse):
                 "0_value_args_0_func_id": "int",
                 "0_value_args_0_args_0_type": "Name",
                 "0_value_args_0_args_0_id": "rec",
-                "0_value_args_0_args_1_type": "Constant",
-                "0_value_args_0_args_1_value": 10
+                "0_value_args_0_keywords_0_type": "keyword",
+                "0_value_args_0_keywords_0_arg": "base",
+                "0_value_args_0_keywords_0_value_type": "Constant",
+                "0_value_args_0_keywords_0_value_value": 10
             }
         )
         .exists()
     )
     assert (
         test_code
-    ), """Inside your loop, are you converting `rec` value to integer based ten
+    ), """Inside your loop, are you converting `rec` value to integer `base=10`
         Are you appending it to `recs` list?"""
     
     test_code= (
@@ -383,6 +385,7 @@ def test_temperature_by_date_method_module3(parse):
         Are you passing `"temperature"` as the first argument to the method call?
         Are you passing `rec_date` as the second argument to the method call?""".format(test_method, parent_class)
 
+
 @pytest.mark.test_temperature_by_date_method_return_module3
 def test_temperature_by_date_method_return_module3(parse):
     # ...
@@ -438,9 +441,8 @@ def test_sensor_app_temp_info_by_area_module3(parse):
     # from temperature_info import TemperatureData
     # ...
     # temperature_data = TemperatureData(data)
-    # recs = temperature_data.get_data_by_area(rec_area=1)
-    # NOTE: print statements are not validated
-    # print("House Temperature sensor records for area 1 = {}".format(len(recs)))
+    # recs = temperature_data.get_data_by_area(rec_area=test_area)
+    # print("\nHouse Temperature sensor records for area {} = {}".format(test_area, len(recs)))
     # print("\tMaximum: {0}, Minimum: {1}, and Averrage: {2} temperatures".format( max(recs), min(recs)))
 
     test_file = "sensor_app"
@@ -453,19 +455,20 @@ def test_sensor_app_temp_info_by_area_module3(parse):
         "temperature_info", "TemperatureData")
     assert my_file_import, "Are you importing `{0}` from `temperature_info` in `{}`".format(test_file)
 
+
     # debug_test_case(my_file)    
 
     test_code = (
         my_file.assign_().match(
             {
-                "6_type": "Assign",
-                "6_targets_0_type": "Name",
-                "6_targets_0_id": "temperature_data",
-                "6_value_type": "Call",
-                "6_value_func_type": "Name",
-                "6_value_func_id": "TemperatureData",
-                "6_value_args_0_type": "Name",
-                "6_value_args_0_id": "data",
+                "7_type": "Assign",
+                "7_targets_0_type": "Name",
+                "7_targets_0_id": "temperature_data",
+                "7_value_type": "Call",
+                "7_value_func_type": "Name",
+                "7_value_func_id": "TemperatureData",
+                "7_value_args_0_type": "Name",
+                "7_value_args_0_id": "data",
             }
         )
         .exists()
@@ -474,23 +477,24 @@ def test_sensor_app_temp_info_by_area_module3(parse):
         test_code
     ), """Are you creating an instance of the '{}' class called `temperature_data`?
         Are you passing `data` list as the initialization argument for the constructor?
+
         """.format(test_class)
     
     test_code = (
         my_file.assign_().match(
             {
-                "7_type": "Assign",
-                "7_targets_0_type": "Name",
-                "7_targets_0_id": "recs",
-                "7_value_type": "Call",
-                "7_value_func_type": "Attribute",
-                "7_value_func_value_type": "Name",
-                "7_value_func_value_id": "temperature_data",
-                "7_value_func_attr": "get_data_by_area",
-                "7_value_keywords_0_type": "keyword",
-                "7_value_keywords_0_arg": "rec_area",
-                "7_value_keywords_0_value_type": "Constant",
-                "7_value_keywords_0_value_value": 1,
+                "8_type": "Assign",
+                "8_targets_0_type": "Name",
+                "8_targets_0_id": "recs",
+                "8_value_type": "Call",
+                "8_value_func_type": "Attribute",
+                "8_value_func_value_type": "Name",
+                "8_value_func_value_id": "temperature_data",
+                "8_value_func_attr": "get_data_by_area",
+                "8_value_keywords_0_type": "keyword",
+                "8_value_keywords_0_arg": "rec_area",
+                "8_value_keywords_0_value_type": "Name",
+                "8_value_keywords_0_value_id": "test_area",
             }
         )
         .exists()
@@ -498,7 +502,7 @@ def test_sensor_app_temp_info_by_area_module3(parse):
     assert (
         test_code
     ), """Are you setting `recs` to the method call `get_data_by_area` from the `temperature_data` object?
-        Are you passing `"rec_area=1"` as the only argument to the method?
+        Are you passing `rec_area=test_area` as the only argument to the method?
         """
 
 
@@ -521,18 +525,18 @@ def test_sensor_app_temp_info_by_date_module3(parse):
     test_code = (
         my_file.assign_().match(
             {
-                "8_type": "Assign",
-                "8_targets_0_type": "Name",
-                "8_targets_0_id": "recs",
-                "8_value_type": "Call",
-                "8_value_func_type": "Attribute",
-                "8_value_func_value_type": "Name",
-                "8_value_func_value_id": "temperature_data",
-                "8_value_func_attr": "get_data_by_date",
-                "8_value_keywords_0_type": "keyword",
-                "8_value_keywords_0_arg": "rec_date",
-                "8_value_keywords_0_value_type": "Name",
-                "8_value_keywords_0_value_id": "test_date"
+                "9_type": "Assign",
+                "9_targets_0_type": "Name",
+                "9_targets_0_id": "recs",
+                "9_value_type": "Call",
+                "9_value_func_type": "Attribute",
+                "9_value_func_value_type": "Name",
+                "9_value_func_value_id": "temperature_data",
+                "9_value_func_attr": "get_data_by_date",
+                "9_value_keywords_0_type": "keyword",
+                "9_value_keywords_0_arg": "rec_date",
+                "9_value_keywords_0_value_type": "Name",
+                "9_value_keywords_0_value_id": "test_date",
             }
         )
         .exists()

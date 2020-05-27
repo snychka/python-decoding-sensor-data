@@ -8,6 +8,8 @@ data = []
 print("Sensor Data App")
 ##############################
 
+# Module 1 code here:
+
 # Module 2 code here:
 
 # Module 3 code here:
@@ -15,5 +17,3 @@ print("Sensor Data App")
 # Module 4 code here:
 
 # Module 5 code here:
-
-# Module 6 code here:
