@@ -2,6 +2,9 @@ from house_info import HouseInfo
 from load_data import load_sensor_data 
 from datetime import datetime, date
 from temperature_info import TemperatureData
+from humidity_info import HumidityData
+from statistics import mean
+from particle_count_info import ParticleData
 
 # don't remove
 data = []
@@ -32,3 +35,27 @@ print("\tMaximum: {0}, Minimum: {1} temperatures".format(max(recs), min(recs)))
 recs = temperature_data.get_data_by_date(rec_date=test_date)
 print("\nHouse Temperature sensor records for area 1 = {}".format(len(recs)))
 print("\tMaximum: {0}, Minimum: {1} temperatures".format(max(recs), min(recs)))
+
+humidity_data = HumidityData(data)
+recs = humidity_data.get_data_by_area(rec_area=1)
+print("\nHouse Humidity sensor records for area 1 = {}".format(len(recs)))
+print("\tAverage: {} humidity".format(mean(recs)))
+
+recs = humidity_data.get_data_by_date(rec_date=test_date)
+print("House Humidity sensor records for date: {} = {}".format( test_date.strftime("%m/%d/%y"), len(recs)))
+print("\tAverrage: {} humdity".format(mean(recs)))
+
+particle_data = ParticleData(data)
+recs = particle_data.get_data_by_area(rec_area=1)
+print("\nHouse Particle sensor records for area 1 = {}".format(len(recs)))
+concentrations = particle_data.get_data_concentrations(data=recs)
+print("\tGood Air Quality Recs: {}".format(concentrations["good"]))
+print("\tModerate Air Quality Recs: {}".format(concentrations["moderate"]))
+print("\tBad Air Quality Recs: {}".format(concentrations["bad"]))
+
+recs = particle_data.get_data_by_date(rec_date=test_date)
+print("\nHouse Particle sensor records for date: {} = {}".format( test_date.strftime("%m/%d/%y"), len(recs)))
+concentrations = particle_data.get_data_concentrations(data=recs)
+print("\tGood Air Quality Recs: {}".format(concentrations["good"]))
+print("\tModerate Air Quality Recs: {}".format(concentrations["moderate"]))
+print("\tBad Air Quality Recs: {}".format(concentrations["bad"]))
