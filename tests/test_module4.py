@@ -142,6 +142,7 @@ def test_humidity_convert_loop_module4(parse):
     assert (
         test_code
     ), """Inside your loop, are you converting `rec` value to `float()` and multiplying it by `100`?
+
         Are you appending it to `recs` list?"""
     
     test_code= (
@@ -379,9 +380,8 @@ def test_sensor_app_temp_info_by_area_module4(parse):
     # from statistics import mean 
     # ...
     # humidity_data = HumidityData(data)
-    # recs = humidity_data.get_data_by_area(rec_area=1)
-    # NOTE: print statements are not validated
-    # print("\nHouse Humidity sensor records for area 1 = {}".format(len(recs)))
+    # recs = particle_data.get_data_by_area(rec_area=test_area)
+    # print("\nHouse Particle sensor records for area {} = {}".format(test_area, len(recs)))
     # print("\tAverage: {} humidity".format(mean(recs)))
 
     test_file = "sensor_app"
@@ -393,21 +393,20 @@ def test_sensor_app_temp_info_by_area_module4(parse):
     my_file_import = my_file.from_imports(
         "humidity_info", "HumidityData")
     assert my_file_import, "Are you importing `HumidityData` from `humidity_info` in `{}`".format(test_file)
-
     
     # debug_test_case(my_file)    
 
     test_code = (
         my_file.assign_().match(
             {
-                "9_type": "Assign",
-                "9_targets_0_type": "Name",
-                "9_targets_0_id": "humidity_data",
-                "9_value_type": "Call",
-                "9_value_func_type": "Name",
-                "9_value_func_id": "HumidityData",
-                "9_value_args_0_type": "Name",
-                "9_value_args_0_id": "data",
+                "10_type": "Assign",
+                "10_targets_0_type": "Name",
+                "10_targets_0_id": "humidity_data",
+                "10_value_type": "Call",
+                "10_value_func_type": "Name",
+                "10_value_func_id": "HumidityData",
+                "10_value_args_0_type": "Name",
+                "10_value_args_0_id": "data",
             }
         )
         .exists()
@@ -421,18 +420,18 @@ def test_sensor_app_temp_info_by_area_module4(parse):
     test_code = (
         my_file.assign_().match(
             {
-                "10_type": "Assign",
-                "10_targets_0_type": "Name",
-                "10_targets_0_id": "recs",
-                "10_value_type": "Call",
-                "10_value_func_type": "Attribute",
-                "10_value_func_value_type": "Name",
-                "10_value_func_value_id": "humidity_data",
-                "10_value_func_attr": "get_data_by_area",
-                "10_value_keywords_0_type": "keyword",
-                "10_value_keywords_0_arg": "rec_area",
-                "10_value_keywords_0_value_type": "Constant",
-                "10_value_keywords_0_value_value": 1,
+                "11_type": "Assign",
+                "11_targets_0_type": "Name",
+                "11_targets_0_id": "recs",
+                "11_value_type": "Call",
+                "11_value_func_type": "Attribute",
+                "11_value_func_value_type": "Name",
+                "11_value_func_value_id": "humidity_data",
+                "11_value_func_attr": "get_data_by_area",
+                "11_value_keywords_0_type": "keyword",
+                "11_value_keywords_0_arg": "rec_area",
+                "11_value_keywords_0_value_type": "Name",
+                "11_value_keywords_0_value_id": "test_area",
             }
         )
         .exists()
@@ -440,7 +439,7 @@ def test_sensor_app_temp_info_by_area_module4(parse):
     assert (
         test_code
     ), """Are you setting `recs` to the method call `get_data_by_area` from the `humidity_data` object?
-        Are you passing `"rec_area=1"` as the only argument to the method?
+        Are you passing `rec_area=test_area` as the only argument to the method?
         """
 
     my_file_import = my_file.from_imports(
@@ -466,18 +465,18 @@ def test_sensor_app_temp_info_by_date_module4(parse):
     test_code = (
         my_file.assign_().match(
             {
-                "11_type": "Assign",
-                "11_targets_0_type": "Name",
-                "11_targets_0_id": "recs",
-                "11_value_type": "Call",
-                "11_value_func_type": "Attribute",
-                "11_value_func_value_type": "Name",
-                "11_value_func_value_id": "humidity_data",
-                "11_value_func_attr": "get_data_by_date",
-                "11_value_keywords_0_type": "keyword",
-                "11_value_keywords_0_arg": "rec_date",
-                "11_value_keywords_0_value_type": "Name",
-                "11_value_keywords_0_value_id": "test_date"
+                "12_type": "Assign",
+                "12_targets_0_type": "Name",
+                "12_targets_0_id": "recs",
+                "12_value_type": "Call",
+                "12_value_func_type": "Attribute",
+                "12_value_func_value_type": "Name",
+                "12_value_func_value_id": "humidity_data",
+                "12_value_func_attr": "get_data_by_date",
+                "12_value_keywords_0_type": "keyword",
+                "12_value_keywords_0_arg": "rec_date",
+                "12_value_keywords_0_value_type": "Name",
+                "12_value_keywords_0_value_id": "test_date",
             }
         )
         .exists()
@@ -931,7 +930,7 @@ def test_particle_get_concentration_for_module4(parse):
         #     # Select particulate concentration
         #     if rec <= 50.0:
         #         particulate["good"] += 1
-        #     elif rec > 50.0 and rec < 100:
+        #     elif rec > 50.0 and rec <= 100:
         #         particulate["moderate"] += 1
         #     else:
         #         particulate["bad"] += 1
@@ -996,8 +995,8 @@ def test_sensor_app_particle_info_by_area_module4(parse):
     # from particle_count_info import ParticleData          # module 4
     # ...
     # particle_data = ParticleData(data)
-    # recs = particle_data.get_data_by_area(rec_area=1)
-    # print("\nHouse Particle sensor records for area 1 = {}".format(len(recs)))
+    # recs = particle_data.get_data_by_area(rec_area=test_area)
+    # print("\nHouse Particle sensor records for area {} = {}".format(test_area, len(recs)))
     # concentrations = particle_data.get_data_concentrations(data=recs)
     # print("\tGood Air Quality Recs: {}".format(concentrations["good"]))
     # print("\tModerate Air Quality Recs: {}".format(concentrations["moderate"]))
@@ -1018,14 +1017,14 @@ def test_sensor_app_particle_info_by_area_module4(parse):
     test_code = (
         my_file.assign_().match(
             {
-                "12_type": "Assign",
-                "12_targets_0_type": "Name",
-                "12_targets_0_id": "particle_data",
-                "12_value_type": "Call",
-                "12_value_func_type": "Name",
-                "12_value_func_id": "ParticleData",
-                "12_value_args_0_type": "Name",
-                "12_value_args_0_id": "data",
+                "13_type": "Assign",
+                "13_targets_0_type": "Name",
+                "13_targets_0_id": "particle_data",
+                "13_value_type": "Call",
+                "13_value_func_type": "Name",
+                "13_value_func_id": "ParticleData",
+                "13_value_args_0_type": "Name",
+                "13_value_args_0_id": "data",
             }
         )
         .exists()
@@ -1039,18 +1038,18 @@ def test_sensor_app_particle_info_by_area_module4(parse):
     test_code = (
         my_file.assign_().match(
             {
-                "13_type": "Assign",
-                "13_targets_0_type": "Name",
-                "13_targets_0_id": "recs",
-                "13_value_type": "Call",
-                "13_value_func_type": "Attribute",
-                "13_value_func_value_type": "Name",
-                "13_value_func_value_id": "particle_data",
-                "13_value_func_attr": "get_data_by_area",
-                "13_value_keywords_0_type": "keyword",
-                "13_value_keywords_0_arg": "rec_area",
-                "13_value_keywords_0_value_type": "Constant",
-                "13_value_keywords_0_value_value": 1,
+                "14_type": "Assign",
+                "14_targets_0_type": "Name",
+                "14_targets_0_id": "recs",
+                "14_value_type": "Call",
+                "14_value_func_type": "Attribute",
+                "14_value_func_value_type": "Name",
+                "14_value_func_value_id": "particle_data",
+                "14_value_func_attr": "get_data_by_area",
+                "14_value_keywords_0_type": "keyword",
+                "14_value_keywords_0_arg": "rec_area",
+                "14_value_keywords_0_value_type": "Name",
+                "14_value_keywords_0_value_id": "test_area",
             }
         )
         .exists()
@@ -1058,24 +1057,24 @@ def test_sensor_app_particle_info_by_area_module4(parse):
     assert (
         test_code
     ), """Are you setting `recs` to the method call `get_data_by_area` from the `particle_data` object?
-        Are you passing `"rec_area=1"` as the only argument to the method?
+        Are you passing `rec_area=test_area` as the only argument to the method?
         """
     
     test_code = (
         my_file.assign_().match(
             {
-                "14_type": "Assign",
-                "14_targets_0_type": "Name",
-                "14_targets_0_id": "concentrations",
-                "14_value_type": "Call",
-                "14_value_func_type": "Attribute",
-                "14_value_func_value_type": "Name",
-                "14_value_func_value_id": "particle_data",
-                "14_value_func_attr": "get_data_concentrations",
-                "14_value_keywords_0_type": "keyword",
-                "14_value_keywords_0_arg": "data",
-                "14_value_keywords_0_value_type": "Name",
-                "14_value_keywords_0_value_id": "recs",
+                "15_type": "Assign",
+                "15_targets_0_type": "Name",
+                "15_targets_0_id": "concentrations",
+                "15_value_type": "Call",
+                "15_value_func_type": "Attribute",
+                "15_value_func_value_type": "Name",
+                "15_value_func_value_id": "particle_data",
+                "15_value_func_attr": "get_data_concentrations",
+                "15_value_keywords_0_type": "keyword",
+                "15_value_keywords_0_arg": "data",
+                "15_value_keywords_0_value_type": "Name",
+                "15_value_keywords_0_value_id": "recs",
             }
         )
         .exists()
@@ -1109,18 +1108,18 @@ def test_sensor_app_particle_info_by_date_module4(parse):
     test_code = (
         my_file.assign_().match(
             {
-                "15_type": "Assign",
-                "15_targets_0_type": "Name",
-                "15_targets_0_id": "recs",
-                "15_value_type": "Call",
-                "15_value_func_type": "Attribute",
-                "15_value_func_value_type": "Name",
-                "15_value_func_value_id": "particle_data",
-                "15_value_func_attr": "get_data_by_date",
-                "15_value_keywords_0_type": "keyword",
-                "15_value_keywords_0_arg": "rec_date",
-                "15_value_keywords_0_value_type": "Name",
-                "15_value_keywords_0_value_id": "test_date",
+                "16_type": "Assign",
+                "16_targets_0_type": "Name",
+                "16_targets_0_id": "recs",
+                "16_value_type": "Call",
+                "16_value_func_type": "Attribute",
+                "16_value_func_value_type": "Name",
+                "16_value_func_value_id": "particle_data",
+                "16_value_func_attr": "get_data_by_date",
+                "16_value_keywords_0_type": "keyword",
+                "16_value_keywords_0_arg": "rec_date",
+                "16_value_keywords_0_value_type": "Name",
+                "16_value_keywords_0_value_id": "test_date",
             }
         )
         .exists()
@@ -1134,18 +1133,18 @@ def test_sensor_app_particle_info_by_date_module4(parse):
     test_code = (
         my_file.assign_().match(
             {
-                "16_type": "Assign",
-                "16_targets_0_type": "Name",
-                "16_targets_0_id": "concentrations",
-                "16_value_type": "Call",
-                "16_value_func_type": "Attribute",
-                "16_value_func_value_type": "Name",
-                "16_value_func_value_id": "particle_data",
-                "16_value_func_attr": "get_data_concentrations",
-                "16_value_keywords_0_type": "keyword",
-                "16_value_keywords_0_arg": "data",
-                "16_value_keywords_0_value_type": "Name",
-                "16_value_keywords_0_value_id": "recs",
+                "17_type": "Assign",
+                "17_targets_0_type": "Name",
+                "17_targets_0_id": "concentrations",
+                "17_value_type": "Call",
+                "17_value_func_type": "Attribute",
+                "17_value_func_value_type": "Name",
+                "17_value_func_value_id": "particle_data",
+                "17_value_func_attr": "get_data_concentrations",
+                "17_value_keywords_0_type": "keyword",
+                "17_value_keywords_0_arg": "data",
+                "17_value_keywords_0_value_type": "Name",
+                "17_value_keywords_0_value_id": "recs",
             }
         )
         .exists()

@@ -443,8 +443,9 @@ def test_sensor_app_house_info_by_area_module2(parse):
     # from house_info import HouseInfo
     # ...
     # house_info = HouseInfo(data)
-    # recs = house_info.get_data_by_area("id", rec_area=1)
-    # print("House sensor records for area 1 = {}".format(len(recs))) # NOT TEST IT
+    # test_area = 1
+    # recs = house_info.get_data_by_area("id", rec_area=test_area)
+    # print("\nHouse sensor records for area {} = {}".format(test_area, len(recs)))
 
     test_file = "sensor_app"
     
@@ -481,29 +482,35 @@ def test_sensor_app_house_info_by_area_module2(parse):
     test_code = (
         my_file.assign_().match(
             {
-                "3_type": "Assign",
-                "3_targets_0_type": "Name",
-                "3_targets_0_id": "recs",
-                "3_value_type": "Call",
-                "3_value_func_type": "Attribute",
-                "3_value_func_value_type": "Name",
-                "3_value_func_value_id": "house_info",
-                "3_value_func_attr": "get_data_by_area",
-                "3_value_args_0_type": "Constant",
-                "3_value_args_0_value": "id",
-                "3_value_keywords_0_type": "keyword",
-                "3_value_keywords_0_arg": "rec_area",
-                "3_value_keywords_0_value_type": "Constant",
-                "3_value_keywords_0_value_value": 1,
+        "3_type": "Assign",
+        "3_targets_0_type": "Name",
+        "3_targets_0_id": "test_area",
+        "3_value_type": "Constant",
+        "3_value_value": 1,
+        "4_type": "Assign",
+        "4_targets_0_type": "Name",
+        "4_targets_0_id": "recs",
+        "4_value_type": "Call",
+        "4_value_func_type": "Attribute",
+        "4_value_func_value_type": "Name",
+        "4_value_func_value_id": "house_info",
+        "4_value_func_attr": "get_data_by_area",
+        "4_value_args_0_type": "Constant",
+        "4_value_args_0_value": "id",
+        "4_value_keywords_0_type": "keyword",
+        "4_value_keywords_0_arg": "rec_area",
+        "4_value_keywords_0_value_type": "Name",
+        "4_value_keywords_0_value_id": "test_area",
             }
         )
         .exists()
     )
     assert (
         test_code
-    ), """Are you creating a variable `recs` and setting it to `house_info.get_data_by_area()`?
+    ), """Are you creating a variable called `test_area` and setting it to 1?
+          Are you creating a variable `recs` and setting it to `house_info.get_data_by_area()`?
           Are you passing `"id"` as the first argument to the method?
-          Are you passing `rec_area=1` as the second argument to the method?"""
+          Are you passing `rec_area=test_area` as the second argument to the method?"""
 
 
 @pytest.mark.test_sensor_app_house_info_by_date_module2
@@ -526,24 +533,25 @@ def test_sensor_app_house_info_by_date_module2(parse):
     my_file_import = my_file.from_imports(
         "datetime", "date")
     assert my_file_import, "Are you importing `date` from `datetime` module?"
+
     
     # debug_test_case(my_file)    
     
     test_code = (
         my_file.assign_().match(
             {
-                "4_type": "Assign",
-                "4_targets_0_type": "Name",
-                "4_targets_0_id": "test_date",
-                "4_value_type": "Call",
-                "4_value_func_type": "Attribute",
-                "4_value_func_value_type": "Name",
-                "4_value_func_value_id": "datetime",
-                "4_value_func_attr": "strptime",
-                "4_value_args_0_type": "Constant",
-                "4_value_args_0_value": "5/9/20",
-                "4_value_args_1_type": "Constant",
-                "4_value_args_1_value": "%m/%d/%y",
+                "5_type": "Assign",
+                "5_targets_0_type": "Name",
+                "5_targets_0_id": "test_date",
+                "5_value_type": "Call",
+                "5_value_func_type": "Attribute",
+                "5_value_func_value_type": "Name",
+                "5_value_func_value_id": "datetime",
+                "5_value_func_attr": "strptime",
+                "5_value_args_0_type": "Constant",
+                "5_value_args_0_value": "5/9/20",
+                "5_value_args_1_type": "Constant",
+                "5_value_args_1_value": "%m/%d/%y",
             }
         )
         .exists()
@@ -551,26 +559,26 @@ def test_sensor_app_house_info_by_date_module2(parse):
     assert (
         test_code
     ),  """Are you creating an instance of the `datetime` class called `test_date` 
+
             which takes `"5/9/20"` and `"%m/%d/%y"` as the two arguments?"""
     
     test_code = (
         my_file.assign_().match(
             {
-                "5_type": "Assign",
-                "5_targets_0_type": "Name",
-                "5_targets_0_id": "recs",
-                "5_value_type": "Call",
-                "5_value_func_type": "Attribute",
-                "5_value_func_value_type": "Name",
-                "5_value_func_value_id": "house_info",
-                "5_value_func_attr": "get_data_by_date",
-                "5_value_args_0_type": "Constant",
-                "5_value_args_0_value": "id",
-                "5_value_keywords_0_type": "keyword",
-                "5_value_keywords_0_arg": "rec_date",
-                "5_value_keywords_0_value_type": "Name",
-                "5_value_keywords_0_value_id": "test_date"
-
+                "6_type": "Assign",
+                "6_targets_0_type": "Name",
+                "6_targets_0_id": "recs",
+                "6_value_type": "Call",
+                "6_value_func_type": "Attribute",
+                "6_value_func_value_type": "Name",
+                "6_value_func_value_id": "house_info",
+                "6_value_func_attr": "get_data_by_date",
+                "6_value_args_0_type": "Constant",
+                "6_value_args_0_value": "id",
+                "6_value_keywords_0_type": "keyword",
+                "6_value_keywords_0_arg": "rec_date",
+                "6_value_keywords_0_value_type": "Name",
+                "6_value_keywords_0_value_id": "test_date",
             }
         )
         .exists()

@@ -27,7 +27,8 @@ def test_energy_create_class_module5(parse):
     ), """Have you created a class called `{0}`?
         Is your class inheriting the properties of the `{1}` class?""".format(test_class, parent_class)
 
-    debug_test_case_class(my_class, test_method) 
+    # debug_test_case_class(my_class, test_method) 
+
     
     test_code = (
         my_class.assign_().match(
@@ -37,7 +38,7 @@ def test_energy_create_class_module5(parse):
                 "0_targets_0_id": "ENERGY_PER_BULB",
                 "0_value_type": "Constant",
                 "0_value_value": "#<float>",
-                
+
                 "1_type": "Assign",
                 "1_targets_0_type": "Name",
                 "1_targets_0_id": "ENERGY_BITS",
@@ -53,15 +54,16 @@ def test_energy_create_class_module5(parse):
         Did you set it to `0.2` float number?
         Are you declararing a constant `ENERGY_BITS`?
         Did you set it to `0x0F0` hex number?"""
-    
-
+   
+  
 @pytest.mark.test_energy_get_energy_method_module5
 def test_energy_get_energy_method_module5(parse):
     # def _get_energy(self, rec):
-    #     rec = int(rec, 16)
-    #     rec = rec & ENERGY_BITS                 # mask ENERGY bits
-    #     rec = rec >> 4                          # shift right
-    #     return rec
+    #     energy = int(rec, base=16)
+    #     energy = energy & self.ENERGY_BITS            # mask ENERGY bits
+    #     energy = energy >> 4                          # shift right
+    #     return energy
+
     test_file = "energy_info"
     parent_class = "HouseInfo"
     test_class = "EnergyData"
@@ -114,31 +116,34 @@ def test_energy_get_energy_method_module5(parse):
             {
                 "0_type": "Assign",
                 "0_targets_0_type": "Name",
-                "0_targets_0_id": "rec",
+                "0_targets_0_id": "energy",
                 "0_value_type": "Call",
                 "0_value_func_type": "Name",
                 "0_value_func_id": "int",
                 "0_value_args_0_type": "Name",
                 "0_value_args_0_id": "rec",
-                "0_value_args_1_type": "Constant",
-                "0_value_args_1_value": 16,
+                "0_value_keywords_0_type": "keyword",
+                "0_value_keywords_0_arg": "base",
+                "0_value_keywords_0_value_type": "Constant",
+                "0_value_keywords_0_value_value": 16,
             }
         )
         .exists()
     )
     assert (
         test_code
-    ), "Are you converting `rec` by casting it as an `int()` with base `16`?"
+    ), """Are you converting `rec` as an `int()` with `base=16`?
+        Are you assigning the result to a variable called `energy`?"""
 
     test_code = (
         my_method.assign_().match(
             {
                 "1_type": "Assign",
                 "1_targets_0_type": "Name",
-                "1_targets_0_id": "rec",
+                "1_targets_0_id": "energy",
                 "1_value_type": "BinOp",
                 "1_value_left_type": "Name",
-                "1_value_left_id": "rec",
+                "1_value_left_id": "energy",
                 "1_value_op_type": "BitAnd",
                 "1_value_right_type": "Attribute",
                 "1_value_right_value_type": "Name",
@@ -150,17 +155,17 @@ def test_energy_get_energy_method_module5(parse):
     )
     assert (
         test_code
-    ), """Are you converting `rec` by "anding it" with `self.ENERGY_BITS`?"""
+    ), """Are you converting `energy` by "anding it" with `self.ENERGY_BITS`?"""
     
     test_code = (
         my_method.assign_().match(
             {
                 "2_type": "Assign",
                 "2_targets_0_type": "Name",
-                "2_targets_0_id": "rec",
+                "2_targets_0_id": "energy",
                 "2_value_type": "BinOp",
                 "2_value_left_type": "Name",
-                "2_value_left_id": "rec",
+                "2_value_left_id": "energy",
                 "2_value_op_type": "RShift",
                 "2_value_right_type": "Constant",
                 "2_value_right_value": 4
@@ -170,21 +175,21 @@ def test_energy_get_energy_method_module5(parse):
     )
     assert (
         test_code
-    ), """Are you converting `rec` by shifting the bits to the right 4 positions?"""
+    ), """Are you converting `energy` by shifting the bits to the right 4 positions?"""
     
     test_code = (
         my_method.returns_call().match(
             {
                 "type": "Return",
                 "value_type": "Name",
-                "value_id": "rec"
+                "value_id": "energy"
             }
         )
         .exists()
     )
     assert (
         test_code
-    ), """Are you returning `recs` from the `{}` method?""".format(test_method)
+    ), """Are you returning `energy` from the `{}` method?""".format(test_method)
 
 
 @pytest.mark.test_energy_convert_method_module5
@@ -627,8 +632,8 @@ def test_sensor_app_energy_info_by_area_module5(parse):
     # from energy_info import EnergyData          # module 4
     # ...
     # energy_data = EnergyData(data)
-    # recs = energy_data.get_data_by_area(rec_area=1)
-    # print("\nHouse Energy sensor records for area 1 = {}".format(len(recs)))
+    # recs = energy_data.get_data_by_area(rec_area=test_area)
+    # print("\nHouse Energy sensor records for area {} = {}".format(test_area, len(recs)))
     # total_energy = energy_data.calculate_energy_usage(data=recs)
     # print("\tEnergy Usage: {:2.2} Watts".format(total_energy))
 
@@ -647,14 +652,14 @@ def test_sensor_app_energy_info_by_area_module5(parse):
     test_code = (
         my_file.assign_().match(
             {
-                "17_type": "Assign",
-                "17_targets_0_type": "Name",
-                "17_targets_0_id": "energy_data",
-                "17_value_type": "Call",
-                "17_value_func_type": "Name",
-                "17_value_func_id": "EnergyData",
-                "17_value_args_0_type": "Name",
-                "17_value_args_0_id": "data",
+                "18_type": "Assign",
+                "18_targets_0_type": "Name",
+                "18_targets_0_id": "energy_data",
+                "18_value_type": "Call",
+                "18_value_func_type": "Name",
+                "18_value_func_id": "EnergyData",
+                "18_value_args_0_type": "Name",
+                "18_value_args_0_id": "data",
             }
         )
         .exists()
@@ -668,18 +673,18 @@ def test_sensor_app_energy_info_by_area_module5(parse):
     test_code = (
         my_file.assign_().match(
             {
-                "18_type": "Assign",
-                "18_targets_0_type": "Name",
-                "18_targets_0_id": "recs",
-                "18_value_type": "Call",
-                "18_value_func_type": "Attribute",
-                "18_value_func_value_type": "Name",
-                "18_value_func_value_id": "energy_data",
-                "18_value_func_attr": "get_data_by_area",
-                "18_value_keywords_0_type": "keyword",
-                "18_value_keywords_0_arg": "rec_area",
-                "18_value_keywords_0_value_type": "Constant",
-                "18_value_keywords_0_value_value": 1
+                "19_type": "Assign",
+                "19_targets_0_type": "Name",
+                "19_targets_0_id": "recs",
+                "19_value_type": "Call",
+                "19_value_func_type": "Attribute",
+                "19_value_func_value_type": "Name",
+                "19_value_func_value_id": "energy_data",
+                "19_value_func_attr": "get_data_by_area",
+                "19_value_keywords_0_type": "keyword",
+                "19_value_keywords_0_arg": "rec_area",
+                "19_value_keywords_0_value_type": "Name",
+                "19_value_keywords_0_value_id": "test_area",
             }
         )
         .exists()
@@ -687,24 +692,24 @@ def test_sensor_app_energy_info_by_area_module5(parse):
     assert (
         test_code
     ), """Are you setting `recs` to the method call `get_data_by_area` from the `energy_data` object?
-        Are you passing `"rec_area=1"` as the only argument to the method?
+        Are you passing `rec_area=test_area` as the only argument to the method?
         """
     
     test_code = (
         my_file.assign_().match(
             {
-                "19_type": "Assign",
-                "19_targets_0_type": "Name",
-                "19_targets_0_id": "total_energy",
-                "19_value_type": "Call",
-                "19_value_func_type": "Attribute",
-                "19_value_func_value_type": "Name",
-                "19_value_func_value_id": "energy_data",
-                "19_value_func_attr": "calculate_energy_usage",
-                "19_value_keywords_0_type": "keyword",
-                "19_value_keywords_0_arg": "data",
-                "19_value_keywords_0_value_type": "Name",
-                "19_value_keywords_0_value_id": "recs",
+                "20_type": "Assign",
+                "20_targets_0_type": "Name",
+                "20_targets_0_id": "total_energy",
+                "20_value_type": "Call",
+                "20_value_func_type": "Attribute",
+                "20_value_func_value_type": "Name",
+                "20_value_func_value_id": "energy_data",
+                "20_value_func_attr": "calculate_energy_usage",
+                "20_value_keywords_0_type": "keyword",
+                "20_value_keywords_0_arg": "data",
+                "20_value_keywords_0_value_type": "Name",
+                "20_value_keywords_0_value_id": "recs",
             }
         )
         .exists()
@@ -736,18 +741,18 @@ def test_sensor_app_energy_info_by_date_module5(parse):
     test_code = (
         my_file.assign_().match(
             {
-                "20_type": "Assign",
-                "20_targets_0_type": "Name",
-                "20_targets_0_id": "recs",
-                "20_value_type": "Call",
-                "20_value_func_type": "Attribute",
-                "20_value_func_value_type": "Name",
-                "20_value_func_value_id": "energy_data",
-                "20_value_func_attr": "get_data_by_date",
-                "20_value_keywords_0_type": "keyword",
-                "20_value_keywords_0_arg": "rec_date",
-                "20_value_keywords_0_value_type": "Name",
-                "20_value_keywords_0_value_id": "test_date",
+                "21_type": "Assign",
+                "21_targets_0_type": "Name",
+                "21_targets_0_id": "recs",
+                "21_value_type": "Call",
+                "21_value_func_type": "Attribute",
+                "21_value_func_value_type": "Name",
+                "21_value_func_value_id": "energy_data",
+                "21_value_func_attr": "get_data_by_date",
+                "21_value_keywords_0_type": "keyword",
+                "21_value_keywords_0_arg": "rec_date",
+                "21_value_keywords_0_value_type": "Name",
+                "21_value_keywords_0_value_id": "test_date",
             }
         )
         .exists()
@@ -761,18 +766,18 @@ def test_sensor_app_energy_info_by_date_module5(parse):
     test_code = (
         my_file.assign_().match(
             {
-                "21_type": "Assign",
-                "21_targets_0_type": "Name",
-                "21_targets_0_id": "total_energy",
-                "21_value_type": "Call",
-                "21_value_func_type": "Attribute",
-                "21_value_func_value_type": "Name",
-                "21_value_func_value_id": "energy_data",
-                "21_value_func_attr": "calculate_energy_usage",
-                "21_value_keywords_0_type": "keyword",
-                "21_value_keywords_0_arg": "data",
-                "21_value_keywords_0_value_type": "Name",
-                "21_value_keywords_0_value_id": "recs"
+                "22_type": "Assign",
+                "22_targets_0_type": "Name",
+                "22_targets_0_id": "total_energy",
+                "22_value_type": "Call",
+                "22_value_func_type": "Attribute",
+                "22_value_func_value_type": "Name",
+                "22_value_func_value_id": "energy_data",
+                "22_value_func_attr": "calculate_energy_usage",
+                "22_value_keywords_0_type": "keyword",
+                "22_value_keywords_0_arg": "data",
+                "22_value_keywords_0_value_type": "Name",
+                "22_value_keywords_0_value_id": "recs"
             }
         )
         .exists()
